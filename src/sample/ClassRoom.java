@@ -91,7 +91,7 @@ public class ClassRoom implements Manage<Student>{
                     return o1.getName().compareTo(o2.getName());
                 }else if(option==2){
                     return o1.getCode().compareTo(o2.getCode());
-                }else {
+                }else if(option==3) {
                     if(o1.getGpa()> o2.getGpa()){
                         return 1;
                     }else if(o1.getGpa() < o2.getGpa()){
@@ -99,6 +99,8 @@ public class ClassRoom implements Manage<Student>{
                     }else {
                         return 0;
                     }
+                }else {
+                    return o1.getDob().compareTo(o2.getDob());
                 }
             }
         });

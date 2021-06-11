@@ -1,14 +1,16 @@
 package sample;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.TextArea;
+import javafx.scene.control.*;
 
-import javafx.scene.control.ListView;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
@@ -37,11 +39,86 @@ public class Controller {
     @FXML
     TextField edit;
     @FXML
+    ComboBox comboBox;
+
+
+    @FXML
     TextArea textArea;
     ClassRoom classRoom = new ClassRoom("C0321K1");
     Validate validate = new Validate();
 
-    public void clear(){
+
+    public void add() {
+        Student student = createStudent();
+        if (student != null) {
+            classRoom.add(student);
+            clear();
+            display();
+            showAlert("Notification", "Successfully");
+        }
+    }
+
+    public void display() {
+        String str = "";
+        for (Student student : classRoom.getStudents()) {
+            str += student.toString() + "\n";
+        }
+        textArea.setText(str);
+    }
+
+    public void delete() {
+        String code = delete.getText();
+        if (classRoom.isExist(code)) {
+            for (Student student : classRoom.getStudents()) {
+                if (student.getCode().equals(code)) {
+                    classRoom.delete(student);
+                    display();
+                    break;
+                }
+            }
+
+        } else {
+            delete.clear();
+        }
+
+    }
+
+    public void edit() {
+        String code = edit.getText();
+        if (validate.validateRegex(code, validate.getCodeRegex()) && classRoom.isExist(code)) {
+            Student student = createStudent();
+            if (student != null) {
+                classRoom.edit(classRoom.searchByCode(code), student);
+                clear();
+                display();
+            }
+        } else {
+            edit.clear();
+        }
+    }
+
+    public void sort() {
+        int option = 0;
+        if (comboBox.getValue().equals("Sort by name")) {
+            option = 1;
+        } else if (comboBox.getValue().equals("Sort by code")) {
+            option = 2;
+        } else if (comboBox.getValue().equals("Sort by GPA")) {
+            option = 3;
+        }
+        if(comboBox.getValue()!=null){
+            classRoom.sort(option);
+            display();
+        }
+    }
+
+    public void initialize() {
+        ObservableList<String> list = FXCollections.observableArrayList("Sort by name", "Sort by code", "Sort by GPA");
+        comboBox.setItems(list);
+        comboBox.getSelectionModel().selectFirst();
+    }
+
+    public void clear() {
         name.clear();
         dob.clear();
         address.clear();
@@ -51,129 +128,53 @@ public class Controller {
         gpa.clear();
     }
 
-
-    public void add(){
+    public Student createStudent() {
         String newName = name.getText();
-        if(validate.validateRegex(newName,validate.getNameRegex())){
+        if (validate.validateRegex(newName, validate.getNameRegex())) {
             String newDob = dob.getText();
-            if(validate.validateRegex(newDob,validate.getDobRegex())){
+            if (validate.validateRegex(newDob, validate.getDobRegex())) {
                 String newAddress = address.getText();
-                if(validate.validateRegex(newAddress,validate.getAddressRegex())){
+                if (validate.validateRegex(newAddress, validate.getAddressRegex())) {
                     String newEmai = email.getText();
-                    if(validate.validateRegex(newEmai,validate.getEmailRegex())){
-                        if(validate.validateRegex(gender.getText(),validate.getGenderRegex())){
+                    if (validate.validateRegex(newEmai, validate.getEmailRegex())) {
+                        if (validate.validateRegex(gender.getText(), validate.getGenderRegex())) {
                             boolean newGender = Boolean.parseBoolean(gender.getText());
                             String newCode = code.getText();
-                            if(validate.validateRegex(newCode,validate.getCodeRegex())){
-                                if(validate.validateRegex(gpa.getText(),validate.getGpaRegex())){
+                            if (validate.validateRegex(newCode, validate.getCodeRegex()) && !classRoom.isExist(newCode)) {
+                                if (validate.validateRegex(gpa.getText(), validate.getGpaRegex())) {
                                     Double newGpa = Double.parseDouble(gpa.getText());
-                                    Student student = new Student(newName,newDob,newAddress,newEmai,newGender,newCode,newGpa);
-                                    classRoom.add(student);
-                                    clear();
-                                }else {
+                                    return new Student(newName, newDob, newAddress, newEmai, newGender, newCode, newGpa);
+                                } else {
                                     gpa.clear();
                                 }
-                            }else {
+                            } else {
                                 code.clear();
                             }
-                        }else {
+                        } else {
                             gender.clear();
                         }
 
-                    }else {
+                    } else {
                         email.clear();
                     }
-                }else {
+                } else {
                     address.clear();
                 }
-            }else {
+            } else {
                 dob.clear();
             }
-        }else {
-            name.clear();
-        }
-
-    }
-
-    public void display(){
-        String str = "";
-        for (Student student: classRoom.getStudents()){
-            str+= student.toString() + "\n";
-        }
-        textArea.setText(str);
-    }
-    public void delete(){
-        String code = delete.getText();
-        if(classRoom.isExist(code)){
-            for (Student student: classRoom.getStudents()){
-                if(student.getCode().equals(code)){
-                    classRoom.delete(student);
-                }
-            }
-            display();
-        }else {
-            delete.clear();
-        }
-
-    }
-    public void edit(){
-        String code = edit.getText();
-        if(validate.validateRegex(code,validate.getCodeRegex())&& classRoom.isExist(code)){
-            Student student = createStudent();
-            if(student!=null){
-                classRoom.edit(classRoom.searchByCode(code),student);
-                clear();
-                display();
-            }
-        }else {
-            edit.clear();
-        }
-    }
-    public Student createStudent(){
-        String newName = name.getText();
-        if(validate.validateRegex(newName,validate.getNameRegex())){
-            String newDob = dob.getText();
-            if(validate.validateRegex(newDob,validate.getDobRegex())){
-                String newAddress = address.getText();
-                if(validate.validateRegex(newAddress,validate.getAddressRegex())){
-                    String newEmai = email.getText();
-                    if(validate.validateRegex(newEmai,validate.getEmailRegex())){
-                        if(validate.validateRegex(gender.getText(),validate.getGenderRegex())){
-                            boolean newGender = Boolean.parseBoolean(gender.getText());
-                            String newCode = code.getText();
-                            if(validate.validateRegex(newCode,validate.getCodeRegex())){
-                                if(validate.validateRegex(gpa.getText(),validate.getGpaRegex())){
-                                    Double newGpa = Double.parseDouble(gpa.getText());
-                                    return new Student(newName,newDob,newAddress,newEmai,newGender,newCode,newGpa);
-                                }else {
-                                    gpa.clear();
-                                }
-                            }else {
-                                code.clear();
-                            }
-                        }else {
-                            gender.clear();
-                        }
-
-                    }else {
-                        email.clear();
-                    }
-                }else {
-                    address.clear();
-                }
-            }else {
-                dob.clear();
-            }
-        }else {
+        } else {
             name.clear();
         }
         return null;
     }
-
-
-
-
-
+    private void showAlert(String title, String message) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
 
 
 }
