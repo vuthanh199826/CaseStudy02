@@ -35,6 +35,8 @@ public class Controller {
     @FXML
     TextField delete;
     @FXML
+    TextField edit;
+    @FXML
     TextArea textArea;
     ClassRoom classRoom = new ClassRoom("C0321K1");
     Validate validate = new Validate();
@@ -113,6 +115,59 @@ public class Controller {
             delete.clear();
         }
 
+    }
+    public void edit(){
+        String code = edit.getText();
+        if(validate.validateRegex(code,validate.getCodeRegex())&& classRoom.isExist(code)){
+            Student student = createStudent();
+            if(student!=null){
+                classRoom.edit(classRoom.searchByCode(code),student);
+                clear();
+                display();
+            }
+        }else {
+            edit.clear();
+        }
+    }
+    public Student createStudent(){
+        String newName = name.getText();
+        if(validate.validateRegex(newName,validate.getNameRegex())){
+            String newDob = dob.getText();
+            if(validate.validateRegex(newDob,validate.getDobRegex())){
+                String newAddress = address.getText();
+                if(validate.validateRegex(newAddress,validate.getAddressRegex())){
+                    String newEmai = email.getText();
+                    if(validate.validateRegex(newEmai,validate.getEmailRegex())){
+                        if(validate.validateRegex(gender.getText(),validate.getGenderRegex())){
+                            boolean newGender = Boolean.parseBoolean(gender.getText());
+                            String newCode = code.getText();
+                            if(validate.validateRegex(newCode,validate.getCodeRegex())){
+                                if(validate.validateRegex(gpa.getText(),validate.getGpaRegex())){
+                                    Double newGpa = Double.parseDouble(gpa.getText());
+                                    return new Student(newName,newDob,newAddress,newEmai,newGender,newCode,newGpa);
+                                }else {
+                                    gpa.clear();
+                                }
+                            }else {
+                                code.clear();
+                            }
+                        }else {
+                            gender.clear();
+                        }
+
+                    }else {
+                        email.clear();
+                    }
+                }else {
+                    address.clear();
+                }
+            }else {
+                dob.clear();
+            }
+        }else {
+            name.clear();
+        }
+        return null;
     }
 
 

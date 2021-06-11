@@ -24,5 +24,7 @@
       <Label layoutX="81.0" layoutY="249.0" text="GPA" />
       <Button layoutX="424.0" layoutY="126.0" mnemonicParsing="false" onAction="#delete" text="Delete" />
       <TextField fx:id="delete" layoutX="495.0" layoutY="126.0" />
+      <TextField fx:id="edit" layoutX="495.0" layoutY="169.0" />
+      <Button layoutX="424.0" layoutY="169.0" mnemonicParsing="false" onAction="#edit" text="Button" />
    </children>
 </AnchorPane>

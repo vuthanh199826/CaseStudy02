@@ -73,6 +73,16 @@ public class ClassRoom implements Manage<Student>{
     }
 
     @Override
+    public int searchByCode(String code) {
+        for (Student student:students){
+            if(student.getCode().equals(code)){
+                return students.indexOf(student);
+            }
+        }
+        return -1;
+    }
+
+    @Override
     public void sort(int option) {
         Collections.sort(students, new Comparator<Student>() {
             @Override
