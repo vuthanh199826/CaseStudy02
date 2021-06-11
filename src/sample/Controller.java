@@ -18,6 +18,7 @@ import java.awt.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class Controller {
     @FXML
@@ -40,12 +41,17 @@ public class Controller {
     TextField edit;
     @FXML
     ComboBox comboBox;
-
-
     @FXML
     TextArea textArea;
     ClassRoom classRoom = new ClassRoom("C0321K1");
     Validate validate = new Validate();
+    CreateAlert createAlert = new CreateAlert();
+
+    public void initialize() {
+        ObservableList<String> list = FXCollections.observableArrayList("Sort by name", "Sort by code", "Sort by GPA");
+        comboBox.setItems(list);
+        comboBox.getSelectionModel().selectFirst();
+    }
 
 
     public void add() {
@@ -54,7 +60,9 @@ public class Controller {
             classRoom.add(student);
             clear();
             display();
-            showAlert("Notification", "Successfully");
+            createAlert.showAlert("Notification", "Successfully", createAlert.INFORMATION);
+        } else {
+            createAlert.showAlert("Error", "Vui lòng điền đầy đủ các trường thông tin bên trái", createAlert.ERROR);
         }
     }
 
@@ -71,13 +79,14 @@ public class Controller {
         if (classRoom.isExist(code)) {
             for (Student student : classRoom.getStudents()) {
                 if (student.getCode().equals(code)) {
-                    classRoom.delete(student);
+                    showConfirmationDelete(student);
                     display();
                     break;
                 }
             }
 
         } else {
+            createAlert.showAlert("Error", "Code is invalid", createAlert.ERROR);
             delete.clear();
         }
 
@@ -92,7 +101,10 @@ public class Controller {
                 clear();
                 display();
             }
+        } else if (code.equals("")) {
+            createAlert.showAlert("WARNING", "Vui lòng điền Code vào ô bên cạnh", createAlert.WARNING);
         } else {
+            createAlert.showAlert("WARNING", "Code sai hoặc đã tồn tại !", createAlert.WARNING);
             edit.clear();
         }
     }
@@ -106,17 +118,12 @@ public class Controller {
         } else if (comboBox.getValue().equals("Sort by GPA")) {
             option = 3;
         }
-        if(comboBox.getValue()!=null){
+        if (comboBox.getValue() != null) {
             classRoom.sort(option);
             display();
         }
     }
 
-    public void initialize() {
-        ObservableList<String> list = FXCollections.observableArrayList("Sort by name", "Sort by code", "Sort by GPA");
-        comboBox.setItems(list);
-        comboBox.getSelectionModel().selectFirst();
-    }
 
     public void clear() {
         name.clear();
@@ -141,7 +148,7 @@ public class Controller {
                             boolean newGender = Boolean.parseBoolean(gender.getText());
                             String newCode = code.getText();
                             if (validate.validateRegex(newCode, validate.CODE_REGEX) && !classRoom.isExist(newCode)) {
-                                if (validate.validateRegex(gpa.getText(), validate.GPA_REGEX())) {
+                                if (validate.validateRegex(gpa.getText(), validate.GPA_REGEX)) {
                                     Double newGpa = Double.parseDouble(gpa.getText());
                                     return new Student(newName, newDob, newAddress, newEmai, newGender, newCode, newGpa);
                                 } else {
@@ -168,12 +175,21 @@ public class Controller {
         }
         return null;
     }
-    private void showAlert(String title, String message) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle(title);
-        alert.setHeaderText(null);
-        alert.setContentText(message);
-        alert.showAndWait();
+
+    public void showConfirmationDelete(Student student) {
+
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Delete Student");
+        alert.setHeaderText("Bạn có chắc chắn muốn xóa học sinh này ?");
+        Optional<ButtonType> option = alert.showAndWait();
+        if (option.get() == null) {
+            createAlert.showAlert("Notification", "No suggestion", createAlert.INFORMATION);
+        } else if (option.get() == ButtonType.OK) {
+            classRoom.delete(student);
+            createAlert.showAlert("Notification", "Deleted", createAlert.INFORMATION);
+        } else if (option.get() == ButtonType.CANCEL) {
+            createAlert.showAlert("Notification", "Canceled", createAlert.INFORMATION);
+        }
     }
 
 
