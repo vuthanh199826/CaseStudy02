@@ -15,40 +15,38 @@ public class Validate {
 
     public Validate() {
     }
-    public boolean validateAdress(String regex) {
-        Pattern pattern = Pattern.compile(ADDRESS_REGEX);
-        Matcher matcher = pattern.matcher(regex);
-        return matcher.matches();
-    }
-    public boolean validateGpa(String regex) {
-        Pattern pattern = Pattern.compile(GPA_REGEX);
-        Matcher matcher = pattern.matcher(regex);
-        return matcher.matches();
-    }
-    public boolean validateGender(String regex) {
-        Pattern pattern = Pattern.compile(GENDER_REGEX);
+
+    public boolean validateRegex(String regex, String REGEX) {
+        Pattern pattern = Pattern.compile(REGEX);
         Matcher matcher = pattern.matcher(regex);
         return matcher.matches();
     }
 
-    public boolean validateCode(String regex) {
-        Pattern pattern = Pattern.compile(CODE_REGEX);
-        Matcher matcher = pattern.matcher(regex);
-        return matcher.matches();
+    public String getCodeRegex() {
+        return CODE_REGEX;
     }
-    public boolean validateName(String regex){
-        Pattern pattern = Pattern.compile(NAME_REGEX);
-        Matcher matcher = pattern.matcher(regex);
-        return matcher.matches();
+
+    public String getNameRegex() {
+        return NAME_REGEX;
     }
-    public boolean validateDob(String regex){
-        Pattern pattern = Pattern.compile(DOB_REGEX);
-        Matcher matcher = pattern.matcher(regex);
-        return matcher.matches();
+
+    public String getDobRegex() {
+        return DOB_REGEX;
     }
-    public boolean validateEmail(String regex){
-        Pattern pattern = Pattern.compile(EMAIL_REGEX);
-        Matcher matcher = pattern.matcher(regex);
-        return matcher.matches();
+
+    public String getAddressRegex() {
+        return ADDRESS_REGEX;
+    }
+
+    public String getEmailRegex() {
+        return EMAIL_REGEX;
+    }
+
+    public String getGenderRegex() {
+        return GENDER_REGEX;
+    }
+
+    public String getGpaRegex() {
+        return GPA_REGEX;
     }
 }

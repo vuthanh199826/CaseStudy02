@@ -52,18 +52,18 @@ public class Controller {
 
     public void add(){
         String newName = name.getText();
-        if(validate.validateName(newName)){
+        if(validate.validateRegex(newName,validate.getNameRegex())){
             String newDob = dob.getText();
-            if(validate.validateDob(newDob)){
+            if(validate.validateRegex(newDob,validate.getDobRegex())){
                 String newAddress = address.getText();
-                if(validate.validateAdress(newAddress)){
+                if(validate.validateRegex(newAddress,validate.getAddressRegex())){
                     String newEmai = email.getText();
-                    if(validate.validateEmail(newEmai)){
-                        if(validate.validateGender(gender.getText())){
+                    if(validate.validateRegex(newEmai,validate.getEmailRegex())){
+                        if(validate.validateRegex(gender.getText(),validate.getGenderRegex())){
                             boolean newGender = Boolean.parseBoolean(gender.getText());
                             String newCode = code.getText();
-                            if(validate.validateCode(newCode)){
-                                if(validate.validateGpa(gpa.getText())){
+                            if(validate.validateRegex(newCode,validate.getCodeRegex())){
+                                if(validate.validateRegex(gpa.getText(),validate.getGpaRegex())){
                                     Double newGpa = Double.parseDouble(gpa.getText());
                                     Student student = new Student(newName,newDob,newAddress,newEmai,newGender,newCode,newGpa);
                                     classRoom.add(student);
