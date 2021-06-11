@@ -85,7 +85,7 @@ public class Controller {
 
     public void edit() {
         String code = edit.getText();
-        if (validate.validateRegex(code, validate.getCodeRegex()) && classRoom.isExist(code)) {
+        if (validate.validateRegex(code, validate.CODE_REGEX) && classRoom.isExist(code)) {
             Student student = createStudent();
             if (student != null) {
                 classRoom.edit(classRoom.searchByCode(code), student);
@@ -130,18 +130,18 @@ public class Controller {
 
     public Student createStudent() {
         String newName = name.getText();
-        if (validate.validateRegex(newName, validate.getNameRegex())) {
+        if (validate.validateRegex(newName, validate.NAME_REGEX)) {
             String newDob = dob.getText();
-            if (validate.validateRegex(newDob, validate.getDobRegex())) {
+            if (validate.validateRegex(newDob, validate.DOB_REGEX)) {
                 String newAddress = address.getText();
-                if (validate.validateRegex(newAddress, validate.getAddressRegex())) {
+                if (validate.validateRegex(newAddress, validate.ADDRESS_REGEX)) {
                     String newEmai = email.getText();
-                    if (validate.validateRegex(newEmai, validate.getEmailRegex())) {
-                        if (validate.validateRegex(gender.getText(), validate.getGenderRegex())) {
+                    if (validate.validateRegex(newEmai, validate.EMAIL_REGEX)) {
+                        if (validate.validateRegex(gender.getText(), validate.GENDER_REGEX)) {
                             boolean newGender = Boolean.parseBoolean(gender.getText());
                             String newCode = code.getText();
-                            if (validate.validateRegex(newCode, validate.getCodeRegex()) && !classRoom.isExist(newCode)) {
-                                if (validate.validateRegex(gpa.getText(), validate.getGpaRegex())) {
+                            if (validate.validateRegex(newCode, validate.CODE_REGEX) && !classRoom.isExist(newCode)) {
+                                if (validate.validateRegex(gpa.getText(), validate.GPA_REGEX())) {
                                     Double newGpa = Double.parseDouble(gpa.getText());
                                     return new Student(newName, newDob, newAddress, newEmai, newGender, newCode, newGpa);
                                 } else {
