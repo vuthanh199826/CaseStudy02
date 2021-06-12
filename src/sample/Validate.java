@@ -11,7 +11,7 @@ public class Validate {
     public static final String ADDRESS_REGEX = "\\D{1,}";
     public static final String EMAIL_REGEX = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$";
     public static final String GENDER_REGEX = "^(?i)(true|false)$";
-    public static final String GPA_REGEX = "^[0-9]{1}$";
+    public static final String GPA_REGEX = "^([0-9](\\.[0-9])?|[1][0])$";
 
     public Validate() {
     }

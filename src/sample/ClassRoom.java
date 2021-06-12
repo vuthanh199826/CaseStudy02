@@ -12,7 +12,7 @@ public class ClassRoom implements Manage<Student>{
     public ClassRoom(String name) {
         this.name = name;
         students = new ArrayList<>();
-        students.add(new Student("thanh3","09/08/1998","HN","thanh@gmail.com",true,"C0221K1",8));
+        students.add(new Student("thanh1","09/08/1998","HN","thanh@gmail.com",true,"C0221K1",8));
         students.add(new Student("thanh1","09/08/1998","HN","thanh@gmail.com",true,"C0321K1",9));
         students.add(new Student("thanh2","09/08/1998","HN","thanh@gmail.com",true,"C0121K1",7));
     }
@@ -63,17 +63,40 @@ public class ClassRoom implements Manage<Student>{
     }
 
     @Override
-    public Student search(String name) {
+    public List<Student>searchByName(String name) {
+        List<Student> list = new ArrayList<>();
         for (Student student:students){
             if(student.getName().equals(name)){
-                return student;
+                list.add(student);
             }
         }
-        return null;
+        return list;
     }
 
     @Override
-    public int searchByCode(String code) {
+    public List<Student> searchByCode(String code) {
+        List<Student>list = new ArrayList<>();
+        for (Student student:students){
+            if(student.getCode().equals(code)){
+                list.add(student);
+            }
+        }
+        return list;
+    }
+
+    public List<Student> searchByGPA(double min, double max){
+        List<Student> list = new ArrayList<>();
+        for (Student student:students){
+            if(student.getGpa()>= min && student.getGpa()<=max){
+                list.add(student);
+            }
+        }
+        return list;
+    }
+
+
+    @Override
+    public int checkIndex(String code) {
         for (Student student:students){
             if(student.getCode().equals(code)){
                 return students.indexOf(student);

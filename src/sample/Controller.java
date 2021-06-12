@@ -2,20 +2,13 @@ package sample;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import javafx.stage.Stage;
 
-import java.awt.*;
-import java.io.IOException;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -40,17 +33,33 @@ public class Controller {
     @FXML
     TextField edit;
     @FXML
+    TextField inputSearch;
+    @FXML
     ComboBox comboBox;
     @FXML
+    ComboBox searchChoice;
+    @FXML
+    ComboBox min;
+    @FXML
+    ComboBox max;
+    @FXML
     TextArea textArea;
+
     ClassRoom classRoom = new ClassRoom("C0321K1");
     Validate validate = new Validate();
     CreateAlert createAlert = new CreateAlert();
 
     public void initialize() {
         ObservableList<String> list = FXCollections.observableArrayList("Sort by name", "Sort by code", "Sort by GPA");
-        comboBox.setItems(list);
-        comboBox.getSelectionModel().selectFirst();
+        setComboBox(comboBox, list);
+        ObservableList<String> listSearchChoice = FXCollections.observableArrayList("Search by name", "Search by code", "Search by GPA");
+        setComboBox(searchChoice, listSearchChoice);
+        ObservableList<String> listMin = FXCollections.observableArrayList("0", "1", "2", "3", "4", "5", "6", "7", "8", "9");
+        setComboBox(min, listMin);
+        ObservableList<String> listMax = FXCollections.observableArrayList("1", "2", "3", "4", "5", "6", "7", "8", "9", "10");
+        setComboBox(max, listMax);
+        setPlaceHolderOfStudent("name", "dd/mm/yyyy", "address", "example@gmail.com", "true/false", "code", "0.0 - 10.0");
+        setPlaceHolderOfSearch();
     }
 
 
@@ -75,12 +84,14 @@ public class Controller {
     }
 
     public void delete() {
+        clear();
         String code = delete.getText();
         if (classRoom.isExist(code)) {
             for (Student student : classRoom.getStudents()) {
                 if (student.getCode().equals(code)) {
                     showConfirmationDelete(student);
                     display();
+                    delete.clear();
                     break;
                 }
             }
@@ -97,19 +108,24 @@ public class Controller {
         if (validate.validateRegex(code, validate.CODE_REGEX) && classRoom.isExist(code)) {
             Student student = createStudent();
             if (student != null) {
-                classRoom.edit(classRoom.searchByCode(code), student);
+                classRoom.edit(classRoom.checkIndex(code), student);
+                createAlert.showAlert("Notification", "Edit Successfully", createAlert.INFORMATION);
                 clear();
                 display();
+                edit.clear();
+            } else {
+                createAlert.showAlert("WARNING", "Vui lòng điền thông tin mới học sinh phía bên trái", createAlert.WARNING);
             }
         } else if (code.equals("")) {
-            createAlert.showAlert("WARNING", "Vui lòng điền Code vào ô bên cạnh", createAlert.WARNING);
+            createAlert.showAlert("WARNING", "Vui lòng điền Code học sinh cần sửa vào ô bên cạnh", createAlert.WARNING);
         } else {
-            createAlert.showAlert("WARNING", "Code sai hoặc đã tồn tại !", createAlert.WARNING);
+            createAlert.showAlert("WARNING", "Code sai hoặc không tồn tại !", createAlert.WARNING);
             edit.clear();
         }
     }
 
     public void sort() {
+        clear();
         int option = 0;
         if (comboBox.getValue().equals("Sort by name")) {
             option = 1;
@@ -122,6 +138,60 @@ public class Controller {
             classRoom.sort(option);
             display();
         }
+    }
+
+    public void search() {
+        if (searchChoice.getValue().equals("Search by name")) {
+            if (inputSearch.getText().equals("")) {
+                createAlert.showAlert("WARNING", "Vui lòng điền tên học sinh cần tìm vào ô bên dưới", createAlert.WARNING);
+            } else {
+                String name = inputSearch.getText();
+                List list = new ArrayList(classRoom.searchByName(name));
+                if (list.size() == 0) {
+                    createAlert.showAlert("WARNING", "Không tìm thấy tên học sinh này", createAlert.WARNING);
+                    inputSearch.clear();
+                } else {
+                    displayOfSearch(list);
+                }
+            }
+
+        } else if (searchChoice.getValue().equals("Search by code")) {
+            if (inputSearch.getText().equals("")) {
+                createAlert.showAlert("WARNING", "Vui lòng điền code học sinh cần tìm vào ô bên dưới", createAlert.WARNING);
+            } else {
+                String code = inputSearch.getText();
+                List list = new ArrayList(classRoom.searchByCode(code));
+                if (list.size() == 0) {
+                    createAlert.showAlert("WARNING", "Không tìm thấy tên học sinh này", createAlert.WARNING);
+                    inputSearch.clear();
+                } else {
+                    displayOfSearch(list);
+                }
+            }
+
+        } else if (searchChoice.getValue().equals("Search by GPA")) {
+            inputSearch.clear();
+            double minGPA = Double.parseDouble(min.getValue().toString());
+            double maxGPA = Double.parseDouble(max.getValue().toString());
+            if (minGPA <= maxGPA) {
+               List<Student>list = new ArrayList<>(classRoom.searchByGPA(minGPA,maxGPA));
+               if(list.size()==0){
+                   createAlert.showAlert("WARNING", "Không tìm thấy học sinh trong thang điểm này", createAlert.WARNING);
+               }else {
+                   displayOfSearch(list);
+               }
+            } else if (minGPA > maxGPA) {
+                createAlert.showAlert("WARNING", "điểm nhỏ nhất phải nhỏ hơn điểm lớn nhất", createAlert.WARNING);
+            }
+        }
+    }
+
+    public void displayOfSearch(List<Student> list) {
+        String str = "";
+        for (Student student : list) {
+            str += student + "\n";
+        }
+        textArea.setText(str);
     }
 
 
@@ -190,6 +260,33 @@ public class Controller {
         } else if (option.get() == ButtonType.CANCEL) {
             createAlert.showAlert("Notification", "Canceled", createAlert.INFORMATION);
         }
+    }
+
+    public void setPlaceHolderOfStudent(String fieldName, String fieldDob, String fieldAddress, String fieldEmail, String fieldGender, String fieldCode, String fieldGpa) {
+        name.setPromptText(fieldName);
+        dob.setPromptText(fieldDob);
+        address.setPromptText(fieldAddress);
+        email.setPromptText(fieldEmail);
+        gender.setPromptText(fieldGender);
+        code.setPromptText(fieldCode);
+        gpa.setPromptText(fieldGpa);
+
+    }
+
+    public void setPlaceHolderOfSearch() {
+        if (searchChoice.getValue().equals("Search by name")) {
+            inputSearch.setPromptText("name");
+        } else if (searchChoice.getValue().equals("Search by code")) {
+            inputSearch.setPromptText("code");
+        } else {
+            inputSearch.setPromptText("none");
+            inputSearch.clear();
+        }
+    }
+
+    public void setComboBox(ComboBox comboBox, ObservableList<String> observableList) {
+        comboBox.setItems(observableList);
+        comboBox.getSelectionModel().selectFirst();
     }
 
 
