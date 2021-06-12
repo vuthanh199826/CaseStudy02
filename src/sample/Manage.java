@@ -9,7 +9,7 @@ public interface Manage <T>{
     void edit(int index, T e) throws IOException;
     List <T> searchByName(String name) throws IOException;
     List <T> searchByCode(String code) throws IOException;
-    int checkIndex(String code);
+    int checkIndex(String code) throws IOException;
     void sort(int option) throws IOException;
     boolean isExist(String code) throws IOException;
 

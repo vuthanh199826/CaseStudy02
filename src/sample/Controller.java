@@ -36,9 +36,17 @@ public class Controller {
     @FXML
     TextField inputSearch;
     @FXML
+    TextField className;
+    @FXML
+    TextField pathName;
+    @FXML
+    TextField deleteClass;
+    @FXML
     ComboBox comboBox;
     @FXML
     ComboBox searchChoice;
+    @FXML
+    ComboBox classChoice;
     @FXML
     ComboBox min;
     @FXML
@@ -46,14 +54,19 @@ public class Controller {
     @FXML
     TextArea textArea;
 
-    ClassRoom classRoom = new ClassRoom("C0321K1");
+    ClassRoom classRoom = new ClassRoom("C0321K1", "Students.csv");
+
+    ClassRoom classRoom1 = new ClassRoom("C0321K2", "Students2.csv");
     Validate validate = new Validate();
     CreateAlert createAlert = new CreateAlert();
+    ManageClass manageClass = new ManageClass();
+    ObservableList<String> listClass = FXCollections.observableArrayList();
+
 
     public Controller() throws IOException {
     }
 
-    public void initialize() {
+    public void initialize() throws IOException {
         ObservableList<String> list = FXCollections.observableArrayList("Sort by name", "Sort by code", "Sort by GPA");
         setComboBox(comboBox, list);
         ObservableList<String> listSearchChoice = FXCollections.observableArrayList("Search by name", "Search by code", "Search by GPA");
@@ -62,15 +75,25 @@ public class Controller {
         setComboBox(min, listMin);
         ObservableList<String> listMax = FXCollections.observableArrayList("1", "2", "3", "4", "5", "6", "7", "8", "9", "10");
         setComboBox(max, listMax);
+//        ObservableList<String> listClass = FXCollections.observableArrayList("C0321K1", "C0321K2");
+        listClass.add("C0321K1");
+        listClass.add("C0321K2");
+        setComboBox(classChoice, listClass);
+
+
         setPlaceHolderOfStudent("name", "dd/mm/yyyy", "address", "example@gmail.com", "true/false", "code", "0.0 - 10.0");
         setPlaceHolderOfSearch();
+        manageClass.add(classRoom);
+        manageClass.add(classRoom1);
     }
 
 
     public void add() throws IOException {
+        String name = classChoice.getValue().toString();
         Student student = createStudent();
         if (student != null) {
-            classRoom.add(student);
+//            classRoom.add(student);
+            manageClass.search(name).add(student);
             clear();
             display();
             createAlert.showAlert("Notification", "Successfully", createAlert.INFORMATION);
@@ -80,7 +103,10 @@ public class Controller {
     }
 
     public void display() throws IOException {
-        List<Student> list = classRoom.readFileCSV("Students.csv");
+        String name = classChoice.getValue().toString();
+        String path = manageClass.search(name).getPath();
+//        List<Student> list = classRoom.readFileCSV("Students.csv");
+        List<Student> list = manageClass.search(name).readFileCSV(path);
         String str = "";
         for (Student student : list) {
             str += student.toString() + "\n";
@@ -90,24 +116,31 @@ public class Controller {
 
     public void delete() throws IOException {
         clear();
+        String name = classChoice.getValue().toString();
         String code = delete.getText();
-        if (classRoom.isExist(code)) {
-                    showConfirmationDelete(code);
-                    classRoom.delete(classRoom.checkIndex(code));
-                    display();
+//        if (classRoom.isExist(code)) {
+        if (manageClass.search(name).isExist(code)) {
+            System.out.println("exist");
+            showConfirmationDelete(code);
+//                    classRoom.delete(classRoom.checkIndex(code));
+            display();
         } else {
             createAlert.showAlert("Error", "Code is invalid", createAlert.ERROR);
+            System.out.println(" not exist");
         }
         delete.clear();
 
     }
 
     public void edit() throws IOException {
+        String name = classChoice.getValue().toString();
         String code = edit.getText();
-        if (validate.validateRegex(code, validate.CODE_REGEX) && classRoom.isExist(code)) {
+//        if (validate.validateRegex(code, validate.CODE_REGEX) && classRoom.isExist(code)) {
+        if (validate.validateRegex(code, validate.CODE_REGEX) && manageClass.search(name).isExist(code)) {
             Student student = createStudent();
             if (student != null) {
-                classRoom.edit(classRoom.checkIndex(code), student);
+//                classRoom.edit(classRoom.checkIndex(code), student);
+                manageClass.search(name).edit(manageClass.search(name).checkIndex(code), student);
                 createAlert.showAlert("Notification", "Edit Successfully", createAlert.INFORMATION);
                 clear();
                 display();
@@ -125,6 +158,7 @@ public class Controller {
 
     public void sort() throws IOException {
         clear();
+        String name = classChoice.getValue().toString();
         int option = 0;
         if (comboBox.getValue().equals("Sort by name")) {
             option = 1;
@@ -134,7 +168,8 @@ public class Controller {
             option = 3;
         }
         if (comboBox.getValue() != null) {
-            classRoom.sort(option);
+//            classRoom.sort(option);
+            manageClass.search(name).sort(option);
             display();
         }
     }
@@ -145,8 +180,10 @@ public class Controller {
                 createAlert.showAlert("WARNING", "Vui lòng điền tên học sinh cần tìm vào ô bên dưới", createAlert.WARNING);
             } else {
                 String name = inputSearch.getText();
-                List list = new ArrayList(classRoom.searchByName(name));
-                classRoom.writeToFileCSV("SearchList.csv",list);
+//                List list = new ArrayList(classRoom.searchByName(name));
+//                classRoom.writeToFileCSV("SearchList.csv", list);
+                List list = new ArrayList(manageClass.search(classChoice.getValue().toString()).searchByName(name));
+                manageClass.search(classChoice.getValue().toString()).writeToFileCSV("SearchList.csv", list);
                 if (list.size() == 0) {
                     createAlert.showAlert("WARNING", "Không tìm thấy tên học sinh này", createAlert.WARNING);
                     inputSearch.clear();
@@ -160,8 +197,10 @@ public class Controller {
                 createAlert.showAlert("WARNING", "Vui lòng điền code học sinh cần tìm vào ô bên dưới", createAlert.WARNING);
             } else {
                 String code = inputSearch.getText();
-                List list = new ArrayList(classRoom.searchByCode(code));
-                classRoom.writeToFileCSV("SearchList.csv",list);
+//                List list = new ArrayList(classRoom.searchByCode(code));
+//                classRoom.writeToFileCSV("SearchList.csv", list);
+                List list = new ArrayList(manageClass.search(classChoice.getValue().toString()).searchByName(code));
+                manageClass.search(classChoice.getValue().toString()).writeToFileCSV("SearchList.csv", list);
                 if (list.size() == 0) {
                     createAlert.showAlert("WARNING", "Không tìm thấy tên học sinh này", createAlert.WARNING);
                     inputSearch.clear();
@@ -175,17 +214,43 @@ public class Controller {
             double minGPA = Double.parseDouble(min.getValue().toString());
             double maxGPA = Double.parseDouble(max.getValue().toString());
             if (minGPA <= maxGPA) {
-               List<Student>list = new ArrayList<>(classRoom.searchByGPA(minGPA,maxGPA));
-                classRoom.writeToFileCSV("SearchList.csv",list);
-               if(list.size()==0){
-                   createAlert.showAlert("WARNING", "Không tìm thấy học sinh trong thang điểm này", createAlert.WARNING);
-               }else {
-                   displayOfSearch();
-               }
+//                List<Student> list = new ArrayList<>(classRoom.searchByGPA(minGPA, maxGPA));
+//                classRoom.writeToFileCSV("SearchList.csv", list);
+                List list = new ArrayList(manageClass.search(classChoice.getValue().toString()).searchByGPA(minGPA,maxGPA));
+                manageClass.search(classChoice.getValue().toString()).writeToFileCSV("SearchList.csv", list);
+                if (list.size() == 0) {
+                    createAlert.showAlert("WARNING", "Không tìm thấy học sinh trong thang điểm này", createAlert.WARNING);
+                } else {
+                    displayOfSearch();
+                }
             } else if (minGPA > maxGPA) {
                 createAlert.showAlert("WARNING", "điểm nhỏ nhất phải nhỏ hơn điểm lớn nhất", createAlert.WARNING);
             }
         }
+    }
+
+
+    public void createNewClass() throws IOException {
+        String name = className.getText();
+        String path = pathName.getText();
+        if (name.equals("") || path.equals("")) {
+            createAlert.showAlert("WARNING", "Vui lòng nhập đầy đủ thông tin vào ô bên cạnh", createAlert.WARNING);
+        } else {
+            if (manageClass.isExist(name)) {
+                createAlert.showAlert("WARNING", "Tên lớp đã tồn tại", createAlert.WARNING);
+            } else {
+                if (validate.validateRegex(name, validate.CODE_REGEX)) {
+                    manageClass.add(new ClassRoom(name, path));
+                    listClass.add(name);
+                    setComboBox(classChoice, listClass);
+                    createAlert.showAlert("Notification", "Success", createAlert.INFORMATION);
+                } else {
+                    createAlert.showAlert("WARNING", "Tên lớp không hợp lệ", createAlert.WARNING);
+                }
+            }
+        }
+
+
     }
 
     public void displayOfSearch() throws IOException {
@@ -258,7 +323,9 @@ public class Controller {
         if (option.get() == null) {
             createAlert.showAlert("Notification", "No suggestion", createAlert.INFORMATION);
         } else if (option.get() == ButtonType.OK) {
-            classRoom.delete(classRoom.checkIndex(code));
+            String name = classChoice.getValue().toString();
+            manageClass.search(name).delete(manageClass.search(name).checkIndex(code));
+//            classRoom.delete(classRoom.checkIndex(code));
             createAlert.showAlert("Notification", "Deleted", createAlert.INFORMATION);
         } else if (option.get() == ButtonType.CANCEL) {
             createAlert.showAlert("Notification", "Canceled", createAlert.INFORMATION);

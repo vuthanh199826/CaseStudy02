@@ -8,14 +8,21 @@ import java.util.List;
 
 public class ClassRoom implements Manage<Student>, WorkWithFile<Student> {
     private String name;
+    private String path;
     private List<Student> students;
 
-    public ClassRoom(String name) {
+    public ClassRoom(String name,String path) {
         this.name = name;
+        this.path = path;
         students = new ArrayList<>();
-        students.add(new Student("thanh1", "09/08/1998", "HN", "thanh@gmail.com", true, "C0221K1", 8));
-        students.add(new Student("thanh1", "09/08/1998", "HN", "thanh@gmail.com", true, "C0321K1", 9));
-        students.add(new Student("thanh2", "09/08/1998", "HN", "thanh@gmail.com", true, "C0121K1", 7));
+    }
+
+    public String getPath() {
+        return path;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
     }
 
     public String getName() {
@@ -37,29 +44,28 @@ public class ClassRoom implements Manage<Student>, WorkWithFile<Student> {
 
     @Override
     public void add(Student e) throws IOException {
-//        List<Student> list = new ArrayList<>(readFileCSV("Student.csv"));
-//        list.add(e);
-//        students = readFileCSV("Student.csv");
-//        students.add(e);
-//        writeToFileCSV("Student.csv",students);
-        addToFileCSV("Students.csv", e);
+//        addToFileCSV("Students.csv", e);
+        addToFileCSV(path, e);
     }
 
     @Override
     public void delete(int index) throws IOException {
-        students = readFileCSV("Students.csv");
+//        students = readFileCSV("Students.csv");
+        students = readFileCSV(path);
         for (Student student : students) {
             if (students.indexOf(student) == index) {
                 students.remove(index);
                 break;
             }
         }
-        writeToFileCSV("Students.csv", students);
+//        writeToFileCSV("Students.csv", students);
+        writeToFileCSV(path, students);
     }
 
     @Override
     public void edit(int index, Student e) throws IOException {
-        students = readFileCSV("Students.csv");
+//        students = readFileCSV("Students.csv");
+        students = readFileCSV(path);
         for (Student student : students) {
             if (students.indexOf(student) == index) {
                 student.setCode(e.getCode());
@@ -71,12 +77,14 @@ public class ClassRoom implements Manage<Student>, WorkWithFile<Student> {
                 student.setGender(e.isGender());
             }
         }
-        writeToFileCSV("Students.csv", students);
+//        writeToFileCSV("Students.csv", students);
+        writeToFileCSV(path,students);
     }
 
     @Override
     public List<Student> searchByName(String name) throws IOException {
-        students = readFileCSV("Students.csv");
+//        students = readFileCSV("Students.csv");
+        students = readFileCSV(path);
         List<Student> list = new ArrayList<>();
         for (Student student : students) {
             if (student.getName().equals(name)) {
@@ -88,7 +96,8 @@ public class ClassRoom implements Manage<Student>, WorkWithFile<Student> {
 
     @Override
     public List<Student> searchByCode(String code) throws IOException {
-        students = readFileCSV("Students.csv");
+//        students = readFileCSV("Students.csv");
+        students = readFileCSV(path);
         List<Student> list = new ArrayList<>();
         for (Student student : students) {
             if (student.getCode().equals(code)) {
@@ -99,7 +108,8 @@ public class ClassRoom implements Manage<Student>, WorkWithFile<Student> {
     }
 
     public List<Student> searchByGPA(double min, double max) throws IOException {
-        students = readFileCSV("Students.csv");
+//        students = readFileCSV("Students.csv");
+        students = readFileCSV(path);
         List<Student> list = new ArrayList<>();
         for (Student student : students) {
             if (student.getGpa() >= min && student.getGpa() <= max) {
@@ -111,7 +121,8 @@ public class ClassRoom implements Manage<Student>, WorkWithFile<Student> {
 
 
     @Override
-    public int checkIndex(String code) {
+    public int checkIndex(String code) throws IOException {
+        students = readFileCSV(path);
         for (Student student : students) {
             if (student.getCode().equals(code)) {
                 return students.indexOf(student);
@@ -122,7 +133,8 @@ public class ClassRoom implements Manage<Student>, WorkWithFile<Student> {
 
     @Override
     public void sort(int option) throws IOException {
-        students = readFileCSV("Students.csv");
+//        students = readFileCSV("Students.csv");
+        students = readFileCSV(path);
         Collections.sort(students, new Comparator<Student>() {
             @Override
             public int compare(Student o1, Student o2) {
@@ -143,12 +155,14 @@ public class ClassRoom implements Manage<Student>, WorkWithFile<Student> {
                 }
             }
         });
-        writeToFileCSV("Students.csv", students);
+//        writeToFileCSV("Students.csv", students);
+        writeToFileCSV(path, students);
     }
 
     @Override
     public boolean isExist(String code) throws IOException {
-        students = readFileCSV("Students.csv");
+//        students = readFileCSV("Students.csv");
+        students = readFileCSV(path);
         for (Student student : students) {
             if (student.getCode().equals(code)) {
                 return true;
@@ -197,5 +211,12 @@ public class ClassRoom implements Manage<Student>, WorkWithFile<Student> {
         return list;
     }
 
-
+    @Override
+    public String toString() {
+        return "ClassRoom{" +
+                "name='" + name + '\'' +
+                ", path='" + path + '\'' +
+                ", students=" + students +
+                '}';
+    }
 }
