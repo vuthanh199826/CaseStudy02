@@ -383,7 +383,7 @@ public class Controller {
     public void showConfirmationDeleteClass(String name) throws IOException {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Delete Student");
-        alert.setHeaderText("Bạn có chắc chắn muốn xóa học sinh này ?");
+        alert.setHeaderText("Bạn có chắc chắn muốn xóa lớp học này ?");
         Optional<ButtonType> option = alert.showAndWait();
         if (option.get() == null) {
             createAlert.showAlert("Notification", "No suggestion", createAlert.INFORMATION);

@@ -148,9 +148,9 @@ public class ClassRoom implements Manage<Student>, WorkWithFile<Student> {
                     return o1.getCode().compareTo(o2.getCode());
                 } else if (option == 3) {
                     if (o1.getGpa() > o2.getGpa()) {
-                        return 1;
-                    } else if (o1.getGpa() < o2.getGpa()) {
                         return -1;
+                    } else if (o1.getGpa() < o2.getGpa()) {
+                        return 1;
                     } else {
                         return 0;
                     }
