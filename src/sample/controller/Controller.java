@@ -354,6 +354,12 @@ public class Controller {
         email.setPromptText(fieldEmail);
         code.setPromptText(fieldCode);
         gpa.setPromptText(fieldGpa);
+        className.setPromptText("name");
+        pathName.setPromptText("path");
+        searchClass.setPromptText("edit name");
+        editClassName.setPromptText("new name");
+        editClassPath.setPromptText("new path");
+        deleteClass.setPromptText("name");
     }
 
     public void setClassChoice() throws IOException {
