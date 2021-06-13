@@ -1,4 +1,4 @@
-package sample;
+package sample.controller;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -7,14 +7,20 @@ import javafx.scene.control.*;
 
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import sample.model.ManageClass;
+import sample.model.ClassRoom;
+import sample.model.CreateAlert;
+import sample.model.Student;
+import sample.model.Validate;
+import sample.service.WorkWithFile;
 
 
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class Controller {
+public class Controller implements WorkWithFile<String> {
     @FXML
     TextField name;
     @FXML
@@ -63,7 +69,8 @@ public class Controller {
     ObservableList<String> listClass = FXCollections.observableArrayList();
 
 
-    public Controller() throws IOException {
+
+    public Controller()  throws IOException {
     }
 
     public void initialize() throws IOException {
@@ -360,4 +367,32 @@ public class Controller {
     }
 
 
+    @Override
+    public void writeToFileCSV(String path, List<String> list) throws IOException {
+        FileWriter fileWriter = new FileWriter(path);
+        BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+        for (String str: list) {
+            bufferedWriter.write(str + "\n");
+        }
+        bufferedWriter.close();
+        fileWriter.close();
+    }
+
+    @Override
+    public void addToFileCSV(String path, String e) throws IOException {
+
+    }
+
+    @Override
+    public List<String> readFileCSV(String path) throws IOException {
+        List<String> list = new ArrayList<>();
+        FileReader fileReader = new FileReader(path);
+        BufferedReader bufferedReader = new BufferedReader(fileReader);
+        String line;
+        while ((line = bufferedReader.readLine()) != null) {
+            String[] arr = line.split(",");
+            list.add(arr[0]);
+        }
+        return list;
+    }
 }

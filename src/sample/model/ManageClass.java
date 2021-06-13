@@ -1,10 +1,13 @@
-package sample;
+package sample.model;
+
+import sample.model.ClassRoom;
+import sample.service.Manage;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ManageClass implements Manage<ClassRoom>{
+public class ManageClass implements Manage<ClassRoom> {
     List<ClassRoom> classRoomList = new ArrayList<>();
 
     public ManageClass() {

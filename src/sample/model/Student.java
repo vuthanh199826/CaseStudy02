@@ -1,6 +1,6 @@
-package sample;
+package sample.model;
 
-public class Student extends Person{
+public class Student extends Person {
     private String code;
     private double gpa;
 

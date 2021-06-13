@@ -1,4 +1,7 @@
-package sample;
+package sample.model;
+
+import sample.service.Manage;
+import sample.service.WorkWithFile;
 
 import java.io.*;
 import java.util.ArrayList;

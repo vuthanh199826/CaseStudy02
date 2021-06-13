@@ -1,6 +1,8 @@
-package sample;
+package sample.model;
 
-public class Teacher extends Person{
+import sample.model.Person;
+
+public class Teacher extends Person {
     private String major;
 
     public Teacher(String name, String dob, String address, String email, boolean gender, String major) {
