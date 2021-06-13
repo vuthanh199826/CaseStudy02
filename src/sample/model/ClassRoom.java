@@ -14,7 +14,7 @@ public class ClassRoom implements Manage<Student>, WorkWithFile<Student> {
     private String path;
     private List<Student> students;
 
-    public ClassRoom(String name,String path) {
+    public ClassRoom(String name, String path) {
         this.name = name;
         this.path = path;
         students = new ArrayList<>();
@@ -82,7 +82,7 @@ public class ClassRoom implements Manage<Student>, WorkWithFile<Student> {
             }
         }
 //        writeToFileCSV("Students.csv", students);
-        writeToFileCSV(path,students);
+        writeToFileCSV(path, students);
     }
 
     @Override

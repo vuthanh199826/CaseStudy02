@@ -1,6 +1,5 @@
 package sample.model;
 
-import sample.model.ClassRoom;
 import sample.service.Manage;
 import sample.service.WorkWithFile;
 
@@ -19,9 +18,9 @@ public class ManageClass implements Manage<ClassRoom>, WorkWithFile<ClassRoom> {
         }
     }
 
-    public ClassRoom search(String name){
-        for (ClassRoom classRoom:classRoomList){
-            if(classRoom.getName().equals(name)){
+    public ClassRoom search(String name) {
+        for (ClassRoom classRoom : classRoomList) {
+            if (classRoom.getName().equals(name)) {
                 return classRoom;
             }
         }
@@ -31,15 +30,15 @@ public class ManageClass implements Manage<ClassRoom>, WorkWithFile<ClassRoom> {
     @Override
     public void add(ClassRoom e) throws IOException {
         classRoomList.add(e);
-        addToFileCSV("ListOfClassName.csv",e);
+        addToFileCSV("ListOfClassName.csv", e);
     }
 
     @Override
     public void delete(int index) throws IOException {
-classRoomList = readFileCSV("ListOfClassName.csv");
-classRoomList.remove(index);
-writeToFileCSV("ListOfClassName.csv",classRoomList);
-}
+        classRoomList = readFileCSV("ListOfClassName.csv");
+        classRoomList.remove(index);
+        writeToFileCSV("ListOfClassName.csv", classRoomList);
+    }
 
 
     @Override
@@ -59,8 +58,8 @@ writeToFileCSV("ListOfClassName.csv",classRoomList);
 
     @Override
     public int checkIndex(String name) {
-        for (ClassRoom classRoom:classRoomList){
-            if(classRoom.getName().equals(name)){
+        for (ClassRoom classRoom : classRoomList) {
+            if (classRoom.getName().equals(name)) {
                 return classRoomList.indexOf(classRoom);
             }
         }
@@ -74,8 +73,8 @@ writeToFileCSV("ListOfClassName.csv",classRoomList);
 
     @Override
     public boolean isExist(String name) throws IOException {
-        for (ClassRoom classRoom:classRoomList){
-            if(classRoom.getName().equals(name)){
+        for (ClassRoom classRoom : classRoomList) {
+            if (classRoom.getName().equals(name)) {
                 return true;
             }
         }
@@ -87,7 +86,7 @@ writeToFileCSV("ListOfClassName.csv",classRoomList);
         FileWriter fileWriter = new FileWriter(path);
         BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
         for (ClassRoom classRoom : list) {
-bufferedWriter.write(classRoom.getName()+","+classRoom.getPath()+"\n");
+            bufferedWriter.write(classRoom.getName() + "," + classRoom.getPath() + "\n");
         }
         bufferedWriter.close();
         fileWriter.close();
@@ -105,20 +104,20 @@ bufferedWriter.write(classRoom.getName()+","+classRoom.getPath()+"\n");
     @Override
     public List<ClassRoom> readFileCSV(String path) throws IOException {
         List<ClassRoom> list = new ArrayList<>();
-       try {
-           FileReader fileReader = new FileReader(path);
-           BufferedReader bufferedReader = new BufferedReader(fileReader);
-           String line;
-           while ((line = bufferedReader.readLine()) != null) {
-               String[] arr = line.split(",");
-               String name = arr[0];
-               String pathOfClass = arr[1];
-               list.add(new ClassRoom(name,pathOfClass));
-           }
-           return list;
-       }catch (Exception e){
-           return list;
-       }
+        try {
+            FileReader fileReader = new FileReader(path);
+            BufferedReader bufferedReader = new BufferedReader(fileReader);
+            String line;
+            while ((line = bufferedReader.readLine()) != null) {
+                String[] arr = line.split(",");
+                String name = arr[0];
+                String pathOfClass = arr[1];
+                list.add(new ClassRoom(name, pathOfClass));
+            }
+            return list;
+        } catch (Exception e) {
+            return list;
+        }
     }
 
     @Override

@@ -2,45 +2,65 @@
 
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
 <AnchorPane maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="590.0" prefWidth="919.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.controller.Controller">
    <children>
-      <Button layoutX="383.0" layoutY="38.0" mnemonicParsing="false" onAction="#add" prefHeight="25.0" prefWidth="59.0" text="Add" />
+      <Button layoutX="383.0" layoutY="84.0" mnemonicParsing="false" onAction="#add" prefHeight="25.0" prefWidth="59.0" text="Add" />
       <TextArea fx:id="textArea" layoutX="94.0" layoutY="361.0" prefHeight="208.0" prefWidth="732.0" />
-      <TextField fx:id="name" layoutX="150.0" layoutY="25.0" prefHeight="25.0" prefWidth="161.0" />
-      <TextField fx:id="dob" layoutX="150.0" layoutY="60.0" prefHeight="25.0" prefWidth="161.0" />
-      <TextField fx:id="address" layoutX="150.0" layoutY="95.0" prefHeight="25.0" prefWidth="161.0" />
-      <TextField fx:id="email" layoutX="150.0" layoutY="134.0" prefHeight="25.0" prefWidth="161.0" />
-      <TextField fx:id="gender" layoutX="62.0" layoutY="311.0" prefHeight="25.0" prefWidth="161.0" />
-      <TextField fx:id="code" layoutX="150.0" layoutY="207.0" prefHeight="25.0" prefWidth="161.0" />
-      <TextField fx:id="gpa" layoutX="150.0" layoutY="245.0" prefHeight="25.0" prefWidth="161.0" />
-      <Button layoutX="383.0" layoutY="83.0" mnemonicParsing="false" onAction="#display" prefHeight="25.0" prefWidth="59.0" text="Display" />
-      <Label layoutX="75.0" layoutY="29.0" text="Name" />
-      <Label layoutX="77.0" layoutY="64.0" text="Dob" />
-      <Label layoutX="77.0" layoutY="99.0" text="Address" />
-      <Label layoutX="77.0" layoutY="138.0" text="Email" />
-      <Label layoutX="75.0" layoutY="173.0" text="Gender" />
-      <Label layoutX="77.0" layoutY="211.0" text="Code" />
-      <Label layoutX="81.0" layoutY="249.0" text="GPA" />
-      <Button layoutX="383.0" layoutY="126.0" mnemonicParsing="false" onAction="#delete" prefHeight="25.0" prefWidth="59.0" text="Delete" />
-      <TextField fx:id="delete" layoutX="454.0" layoutY="126.0" prefHeight="25.0" prefWidth="192.0" />
-      <TextField fx:id="edit" layoutX="454.0" layoutY="182.0" prefHeight="25.0" prefWidth="192.0" />
-      <Button layoutX="383.0" layoutY="178.0" mnemonicParsing="false" onAction="#edit" prefHeight="25.0" prefWidth="59.0" text="Edit" />
-      <Label layoutX="556.0" layoutY="108.0" text="Code" />
-      <Label layoutX="556.0" layoutY="165.0" text="Code" />
-      <Button layoutX="383.0" layoutY="220.0" mnemonicParsing="false" onAction="#sort" prefHeight="25.0" prefWidth="59.0" text="Sort" />
-      <ComboBox fx:id="comboBox" layoutX="454.0" layoutY="220.0" prefHeight="25.0" prefWidth="192.0" />
+      <TextField fx:id="name" layoutX="150.0" layoutY="104.0" prefHeight="25.0" prefWidth="161.0" />
+      <TextField fx:id="dob" layoutX="150.0" layoutY="134.0" prefHeight="25.0" prefWidth="161.0" />
+      <TextField fx:id="address" layoutX="150.0" layoutY="166.0" prefHeight="25.0" prefWidth="161.0" />
+      <TextField fx:id="email" layoutX="150.0" layoutY="199.0" prefHeight="25.0" prefWidth="161.0" />
+      <TextField fx:id="code" layoutX="150.0" layoutY="266.0" prefHeight="25.0" prefWidth="161.0" />
+      <TextField fx:id="gpa" layoutX="150.0" layoutY="298.0" prefHeight="25.0" prefWidth="161.0" />
+      <Button layoutX="383.0" layoutY="113.0" mnemonicParsing="false" onAction="#display" prefHeight="25.0" prefWidth="59.0" text="Display" />
+      <Label layoutX="85.0" layoutY="108.0" text="Name" />
+      <Label layoutX="89.0" layoutY="138.0" text="Dob" />
+      <Label layoutX="80.0" layoutY="174.0" text="Address" />
+      <Label layoutX="84.0" layoutY="203.0" text="Email" />
+      <Label layoutX="79.0" layoutY="237.0" text="Gender" />
+      <Label layoutX="86.0" layoutY="270.0" text="Code" />
+      <Label layoutX="87.0" layoutY="302.0" text="GPA" />
+      <Button layoutX="383.0" layoutY="154.0" mnemonicParsing="false" onAction="#delete" prefHeight="25.0" prefWidth="59.0" text="Delete" />
+      <TextField fx:id="delete" layoutX="454.0" layoutY="154.0" prefHeight="25.0" prefWidth="192.0" />
+      <TextField fx:id="edit" layoutX="454.0" layoutY="199.0" prefHeight="25.0" prefWidth="192.0" />
+      <Button layoutX="383.0" layoutY="199.0" mnemonicParsing="false" onAction="#edit" prefHeight="25.0" prefWidth="59.0" text="Edit" />
+      <Label layoutX="528.0" layoutY="138.0" text="Code" />
+      <Label layoutX="528.0" layoutY="183.0" text="Code" />
+      <Button layoutX="383.0" layoutY="233.0" mnemonicParsing="false" onAction="#sort" prefHeight="25.0" prefWidth="59.0" text="Sort" />
+      <ComboBox fx:id="comboBox" layoutX="454.0" layoutY="233.0" prefHeight="25.0" prefWidth="192.0" />
       <Button fx:id="search" layoutX="383.0" layoutY="266.0" mnemonicParsing="false" onAction="#search" prefHeight="25.0" prefWidth="59.0" text="Search" />
       <TextField fx:id="inputSearch" layoutX="383.0" layoutY="298.0" prefHeight="25.0" prefWidth="128.0" />
       <ComboBox fx:id="min" layoutX="521.0" layoutY="298.0" prefHeight="25.0" prefWidth="59.0" />
       <ComboBox fx:id="searchChoice" layoutX="454.0" layoutY="266.0" onAction="#setPlaceHolderOfSearch" prefHeight="25.0" prefWidth="192.0" />
       <ComboBox fx:id="max" layoutX="587.0" layoutY="298.0" prefHeight="25.0" prefWidth="59.0" />
-      <ComboBox fx:id="classChoice" layoutX="475.0" layoutY="60.0" prefWidth="150.0" />
-      <Button layoutX="686.0" layoutY="60.0" mnemonicParsing="false" onAction="#createNewClass" prefHeight="25.0" prefWidth="51.0" text="Add" />
-      <Button layoutX="686.0" layoutY="126.0" mnemonicParsing="false" onAction="#deleteClass" text="Delete" />
-      <TextField fx:id="className" layoutX="753.0" layoutY="38.0" prefHeight="25.0" prefWidth="128.0" />
-      <TextField fx:id="pathName" layoutX="753.0" layoutY="83.0" prefHeight="25.0" prefWidth="128.0" />
-      <TextField fx:id="deleteClass" layoutX="753.0" layoutY="126.0" prefHeight="25.0" prefWidth="128.0" />
-      <ComboBox fx:id="choiceGender" layoutX="150.0" layoutY="170.0" prefHeight="25.0" prefWidth="161.0" />
+      <ComboBox fx:id="classChoice" layoutX="467.0" layoutY="101.0" prefWidth="150.0" />
+      <Button layoutX="686.0" layoutY="101.0" mnemonicParsing="false" onAction="#createNewClass" prefHeight="25.0" prefWidth="51.0" text="Add" />
+      <Button layoutX="686.0" layoutY="154.0" mnemonicParsing="false" onAction="#deleteClass" text="Delete" />
+      <TextField fx:id="className" layoutX="753.0" layoutY="84.0" prefHeight="25.0" prefWidth="128.0" />
+      <TextField fx:id="pathName" layoutX="753.0" layoutY="117.0" prefHeight="25.0" prefWidth="128.0" />
+      <TextField fx:id="deleteClass" layoutX="753.0" layoutY="154.0" prefHeight="25.0" prefWidth="128.0" />
+      <ComboBox fx:id="choiceGender" layoutX="150.0" layoutY="233.0" prefHeight="25.0" prefWidth="161.0" />
+      <Label layoutX="150.0" layoutY="42.0" prefHeight="44.0" prefWidth="161.0" text="Student" textFill="#da3333">
+         <font>
+            <Font name="Stencil" size="35.0" />
+         </font>
+      </Label>
+      <Label layoutX="762.0" layoutY="42.0" prefHeight="17.0" prefWidth="128.0" text="CLASS" textFill="#e15050">
+         <font>
+            <Font name="Stencil" size="35.0" />
+         </font>
+      </Label>
+      <Label layoutX="513.0" layoutY="76.0" prefHeight="17.0" prefWidth="59.0" text="Manage" textFill="#63bf68">
+         <font>
+            <Font name="System Bold Italic" size="15.0" />
+         </font>
+      </Label>
+      <Label layoutX="441.0" layoutY="14.0" prefHeight="18.0" prefWidth="141.0" text="QUÁN LÝ LỚP HỌC" textFill="#3758d0">
+         <font>
+            <Font name="Stencil" size="15.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>

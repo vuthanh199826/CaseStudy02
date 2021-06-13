@@ -4,7 +4,6 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import sample.model.ManageClass;
@@ -12,15 +11,13 @@ import sample.model.ClassRoom;
 import sample.model.CreateAlert;
 import sample.model.Student;
 import sample.model.Validate;
-import sample.service.WorkWithFile;
-
 
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class Controller implements WorkWithFile<String> {
+public class Controller {
     @FXML
     TextField name;
     @FXML
@@ -29,8 +26,6 @@ public class Controller implements WorkWithFile<String> {
     TextField address;
     @FXML
     TextField email;
-//    @FXML
-//    TextField gender;
     @FXML
     TextField code;
     @FXML
@@ -61,18 +56,11 @@ public class Controller implements WorkWithFile<String> {
     ComboBox max;
     @FXML
     TextArea textArea;
-//
-//    ClassRoom classRoom = new ClassRoom("C0321K1", "Students.csv");
-//
-//    ClassRoom classRoom1 = new ClassRoom("C0321K2", "Students2.csv");
     Validate validate = new Validate();
     CreateAlert createAlert = new CreateAlert();
     ManageClass manageClass = new ManageClass();
 
-
-
-
-    public Controller()  throws IOException {
+    public Controller() {
     }
 
     public void initialize() throws IOException {
@@ -82,27 +70,20 @@ public class Controller implements WorkWithFile<String> {
         setComboBox(searchChoice, listSearchChoice);
         ObservableList<String> listMin = FXCollections.observableArrayList("0", "1", "2", "3", "4", "5", "6", "7", "8", "9");
         setComboBox(min, listMin);
-        ObservableList<String> listGender = FXCollections.observableArrayList("Male","Female");
-setComboBox(choiceGender,listGender);
+        ObservableList<String> listGender = FXCollections.observableArrayList("Male", "Female");
+        setComboBox(choiceGender, listGender);
         ObservableList<String> listMax = FXCollections.observableArrayList("1", "2", "3", "4", "5", "6", "7", "8", "9", "10");
         setComboBox(max, listMax);
-setClassChoice();
-
-
+        setClassChoice();
         setPlaceHolderOfStudent("name", "dd/mm/yyyy", "address", "example@gmail.com", "true/false", "code", "0.0 - 10.0");
         setPlaceHolderOfSearch();
-//        manageClass.add(classRoom);
-//        manageClass.add(classRoom1);
         System.out.println(manageClass);
-
     }
-
 
     public void add() throws IOException {
         String name = classChoice.getValue().toString();
         Student student = createStudent();
         if (student != null) {
-//            classRoom.add(student);
             manageClass.search(name).add(student);
             clear();
             display();
@@ -118,43 +99,35 @@ setClassChoice();
         List<Student> list = manageClass.search(name).readFileCSV(path);
         String str = "";
         try {
-
             for (Student student : list) {
                 str += student.toString() + "\n";
             }
             textArea.setText(str);
-        }catch (Exception e){
+        } catch (Exception e) {
             textArea.setText("Empty");
         }
-
     }
 
     public void delete() throws IOException {
         clear();
         String name = classChoice.getValue().toString();
         String code = delete.getText();
-//        if (classRoom.isExist(code)) {
         if (manageClass.search(name).isExist(code)) {
-            System.out.println("exist");
             showConfirmationDelete(code);
-//                    classRoom.delete(classRoom.checkIndex(code));
             display();
         } else {
             createAlert.showAlert("Error", "Code is invalid", createAlert.ERROR);
             System.out.println(" not exist");
         }
         delete.clear();
-
     }
 
     public void edit() throws IOException {
         String name = classChoice.getValue().toString();
         String code = edit.getText();
-//        if (validate.validateRegex(code, validate.CODE_REGEX) && classRoom.isExist(code)) {
         if (validate.validateRegex(code, validate.CODE_REGEX) && manageClass.search(name).isExist(code)) {
             Student student = createStudent();
             if (student != null) {
-//                classRoom.edit(classRoom.checkIndex(code), student);
                 manageClass.search(name).edit(manageClass.search(name).checkIndex(code), student);
                 createAlert.showAlert("Notification", "Edit Successfully", createAlert.INFORMATION);
                 clear();
@@ -183,7 +156,6 @@ setClassChoice();
             option = 3;
         }
         if (comboBox.getValue() != null) {
-//            classRoom.sort(option);
             manageClass.search(name).sort(option);
             display();
         }
@@ -195,8 +167,6 @@ setClassChoice();
                 createAlert.showAlert("WARNING", "Vui lòng điền tên học sinh cần tìm vào ô bên dưới", createAlert.WARNING);
             } else {
                 String name = inputSearch.getText();
-//                List list = new ArrayList(classRoom.searchByName(name));
-//                classRoom.writeToFileCSV("SearchList.csv", list);
                 List list = new ArrayList(manageClass.search(classChoice.getValue().toString()).searchByName(name));
                 manageClass.search(classChoice.getValue().toString()).writeToFileCSV("SearchList.csv", list);
                 if (list.size() == 0) {
@@ -206,14 +176,11 @@ setClassChoice();
                     displayOfSearch();
                 }
             }
-
         } else if (searchChoice.getValue().equals("Search by code")) {
             if (inputSearch.getText().equals("")) {
                 createAlert.showAlert("WARNING", "Vui lòng điền code học sinh cần tìm vào ô bên dưới", createAlert.WARNING);
             } else {
                 String code = inputSearch.getText();
-//                List list = new ArrayList(classRoom.searchByCode(code));
-//                classRoom.writeToFileCSV("SearchList.csv", list);
                 List list = new ArrayList(manageClass.search(classChoice.getValue().toString()).searchByName(code));
                 manageClass.search(classChoice.getValue().toString()).writeToFileCSV("SearchList.csv", list);
                 if (list.size() == 0) {
@@ -223,15 +190,12 @@ setClassChoice();
                     displayOfSearch();
                 }
             }
-
         } else if (searchChoice.getValue().equals("Search by GPA")) {
             inputSearch.clear();
             double minGPA = Double.parseDouble(min.getValue().toString());
             double maxGPA = Double.parseDouble(max.getValue().toString());
             if (minGPA <= maxGPA) {
-//                List<Student> list = new ArrayList<>(classRoom.searchByGPA(minGPA, maxGPA));
-//                classRoom.writeToFileCSV("SearchList.csv", list);
-                List list = new ArrayList(manageClass.search(classChoice.getValue().toString()).searchByGPA(minGPA,maxGPA));
+                List list = new ArrayList(manageClass.search(classChoice.getValue().toString()).searchByGPA(minGPA, maxGPA));
                 manageClass.search(classChoice.getValue().toString()).writeToFileCSV("SearchList.csv", list);
                 if (list.size() == 0) {
                     createAlert.showAlert("WARNING", "Không tìm thấy học sinh trong thang điểm này", createAlert.WARNING);
@@ -244,7 +208,6 @@ setClassChoice();
         }
     }
 
-
     public void createNewClass() throws IOException {
         String name = className.getText();
         String path = pathName.getText();
@@ -255,33 +218,34 @@ setClassChoice();
                 createAlert.showAlert("WARNING", "Tên lớp đã tồn tại", createAlert.WARNING);
             } else {
                 if (validate.validateRegex(name, validate.CODE_REGEX)) {
-                    ClassRoom classRoom = new ClassRoom(name,path);
-                    classRoom.writeToFileCSV(path,classRoom.getStudents());
+                    ClassRoom classRoom = new ClassRoom(name, path);
+                    classRoom.writeToFileCSV(path, classRoom.getStudents());
                     manageClass.add(classRoom);
                     setClassChoice();
-//                    listClass.add(name);
-//                    setComboBox(classChoice, listClass);
                     createAlert.showAlert("Notification", "Success", createAlert.INFORMATION);
                 } else {
                     createAlert.showAlert("WARNING", "Tên lớp không hợp lệ", createAlert.WARNING);
                 }
             }
         }
-
-
     }
 
     public void deleteClass() throws IOException {
         String name = deleteClass.getText();
-        if(manageClass.isExist(name)){
-            manageClass.delete(manageClass.checkIndex(name));
+        if (manageClass.isExist(name)) {
+            showConfirmationDeleteClass(name);
             setClassChoice();
-            createAlert.showAlert("Notification","Success",CreateAlert.INFORMATION);
+        } else {
+            if (deleteClass.getText().equals("")) {
+                createAlert.showAlert("Warning", "Nhập tên class muốn xóa vào ô bên cạnh", CreateAlert.WARNING);
+            } else {
+                createAlert.showAlert("Warning", "Invalid", CreateAlert.WARNING);
+            }
         }
+        deleteClass.clear();
     }
 
     public void displayOfSearch() throws IOException {
-//        List<Student> list = classRoom.readFileCSV("SearchList.csv");
         List<Student> list = manageClass.search(classChoice.getValue().toString()).readFileCSV("SearchList.csv");
         String str = "";
         for (Student student : list) {
@@ -290,13 +254,11 @@ setClassChoice();
         textArea.setText(str);
     }
 
-
     public void clear() {
         name.clear();
         dob.clear();
         address.clear();
         email.clear();
-//        gender.clear();
         code.clear();
         gpa.clear();
     }
@@ -310,24 +272,18 @@ setClassChoice();
                 if (validate.validateRegex(newAddress, validate.ADDRESS_REGEX)) {
                     String newEmai = email.getText();
                     if (validate.validateRegex(newEmai, validate.EMAIL_REGEX)) {
-//                        if (validate.validateRegex(gender.getText(), validate.GENDER_REGEX)) {
-//                            boolean newGender = Boolean.parseBoolean(gender.getText());
-                            String newGender = choiceGender.getValue().toString();
-                            String newCode = code.getText();
-                            if (validate.validateRegex(newCode, validate.CODE_REGEX) && !manageClass.search(classChoice.getValue().toString()).isExist(newCode)) {
-                                if (validate.validateRegex(gpa.getText(), validate.GPA_REGEX)) {
-                                    Double newGpa = Double.parseDouble(gpa.getText());
-                                    return new Student(newName, newDob, newAddress, newEmai, newGender, newCode, newGpa);
-                                } else {
-                                    gpa.clear();
-                                }
+                        String newGender = choiceGender.getValue().toString();
+                        String newCode = code.getText();
+                        if (validate.validateRegex(newCode, validate.CODE_REGEX) && !manageClass.search(classChoice.getValue().toString()).isExist(newCode)) {
+                            if (validate.validateRegex(gpa.getText(), validate.GPA_REGEX)) {
+                                Double newGpa = Double.parseDouble(gpa.getText());
+                                return new Student(newName, newDob, newAddress, newEmai, newGender, newCode, newGpa);
                             } else {
-                                code.clear();
+                                gpa.clear();
                             }
-//                        } else {
-//                            gender.clear();
-//                        }
-
+                        } else {
+                            code.clear();
+                        }
                     } else {
                         email.clear();
                     }
@@ -344,7 +300,6 @@ setClassChoice();
     }
 
     public void showConfirmationDelete(String code) throws IOException {
-
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Delete Student");
         alert.setHeaderText("Bạn có chắc chắn muốn xóa học sinh này ?");
@@ -354,7 +309,6 @@ setClassChoice();
         } else if (option.get() == ButtonType.OK) {
             String name = classChoice.getValue().toString();
             manageClass.search(name).delete(manageClass.search(name).checkIndex(code));
-//            classRoom.delete(classRoom.checkIndex(code));
             createAlert.showAlert("Notification", "Deleted", createAlert.INFORMATION);
         } else if (option.get() == ButtonType.CANCEL) {
             createAlert.showAlert("Notification", "Canceled", createAlert.INFORMATION);
@@ -366,14 +320,13 @@ setClassChoice();
         dob.setPromptText(fieldDob);
         address.setPromptText(fieldAddress);
         email.setPromptText(fieldEmail);
-//        gender.setPromptText(fieldGender);
         code.setPromptText(fieldCode);
         gpa.setPromptText(fieldGpa);
-
     }
+
     public void setClassChoice() throws IOException {
         ObservableList<String> listClass = FXCollections.observableArrayList();
-        for (ClassRoom classRoom:manageClass.readFileCSV("ListOfClassName.csv")){
+        for (ClassRoom classRoom : manageClass.readFileCSV("ListOfClassName.csv")) {
             listClass.add(classRoom.getName());
         }
         setComboBox(classChoice, listClass);
@@ -395,33 +348,21 @@ setClassChoice();
         comboBox.getSelectionModel().selectFirst();
     }
 
-
-    @Override
-    public void writeToFileCSV(String path, List<String> list) throws IOException {
-        FileWriter fileWriter = new FileWriter(path);
-        BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
-        for (String str: list) {
-            bufferedWriter.write(str + "\n");
+    public void showConfirmationDeleteClass(String name) throws IOException {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Delete Student");
+        alert.setHeaderText("Bạn có chắc chắn muốn xóa học sinh này ?");
+        Optional<ButtonType> option = alert.showAndWait();
+        if (option.get() == null) {
+            createAlert.showAlert("Notification", "No suggestion", createAlert.INFORMATION);
+        } else if (option.get() == ButtonType.OK) {
+            manageClass.delete(manageClass.checkIndex(name));
+            createAlert.showAlert("Notification", "Deleted", createAlert.INFORMATION);
+        } else if (option.get() == ButtonType.CANCEL) {
+            createAlert.showAlert("Notification", "Canceled", createAlert.INFORMATION);
         }
-        bufferedWriter.close();
-        fileWriter.close();
-    }
-
-    @Override
-    public void addToFileCSV(String path, String e) throws IOException {
-
-    }
-
-    @Override
-    public List<String> readFileCSV(String path) throws IOException {
-        List<String> list = new ArrayList<>();
-        FileReader fileReader = new FileReader(path);
-        BufferedReader bufferedReader = new BufferedReader(fileReader);
-        String line;
-        while ((line = bufferedReader.readLine()) != null) {
-            String[] arr = line.split(",");
-            list.add(arr[0]);
-        }
-        return list;
     }
 }
+
+
+
