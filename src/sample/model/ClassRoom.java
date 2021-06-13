@@ -36,7 +36,8 @@ public class ClassRoom implements Manage<Student>, WorkWithFile<Student> {
         this.name = name;
     }
 
-    public List<Student> getStudents() {
+    public List<Student> getStudents() throws IOException {
+        students = readFileCSV(path);
         return students;
     }
 
@@ -195,6 +196,16 @@ public class ClassRoom implements Manage<Student>, WorkWithFile<Student> {
 //        bufferedWriter.write(student.getName() + "," + student.getDob() + "," + student.getAddress() + "," + student.getEmail() + "," + student.isGender() + "," + student.getCode() + "," + student.getGpa() + "\n");
         bufferedWriter.write(student.getName() + "," + student.getDob() + "," + student.getAddress() + "," + student.getEmail() + "," + student.getGender() + "," + student.getCode() + "," + student.getGpa() + "\n");
 
+        bufferedWriter.close();
+        fileWriter.close();
+    }
+
+    public void addToFileCSV(String path, List<Student> list) throws IOException {
+        FileWriter fileWriter = new FileWriter(path);
+        BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+        for (Student student : list) {
+            bufferedWriter.write(student.getName() + "," + student.getDob() + "," + student.getAddress() + "," + student.getEmail() + "," + student.getGender() + "," + student.getCode() + "," + student.getGpa() + "\n");
+        }
         bufferedWriter.close();
         fileWriter.close();
     }

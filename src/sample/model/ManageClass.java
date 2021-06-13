@@ -5,6 +5,8 @@ import sample.service.WorkWithFile;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class ManageClass implements Manage<ClassRoom>, WorkWithFile<ClassRoom> {
@@ -18,6 +20,11 @@ public class ManageClass implements Manage<ClassRoom>, WorkWithFile<ClassRoom> {
         }
     }
 
+    public List<ClassRoom> getClassRoomList() throws IOException {
+        classRoomList = readFileCSV("ListOfClassName.csv");
+        return classRoomList;
+    }
+
     public ClassRoom search(String name) {
         for (ClassRoom classRoom : classRoomList) {
             if (classRoom.getName().equals(name)) {
@@ -26,6 +33,43 @@ public class ManageClass implements Manage<ClassRoom>, WorkWithFile<ClassRoom> {
         }
         return null;
     }
+
+    public void addAll() throws IOException {
+        FileWriter fileWriter = new FileWriter("AllStudent.csv");
+        BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+        for (ClassRoom classRoom:getClassRoomList()){
+            for (Student student:classRoom.getStudents()){
+                bufferedWriter.write(student.getName() + "," + student.getDob() + "," + student.getAddress() + "," + student.getEmail() + "," + student.getGender() + "," + student.getCode() + "," + student.getGpa() + "\n");
+            }
+        }
+        bufferedWriter.close();
+        fileWriter.close();
+    }
+
+    public List<Student> readAll() throws IOException {
+        addAll();
+        List<Student> list = new ArrayList<>();
+        for (ClassRoom classRoom:getClassRoomList()){
+            list.addAll(classRoom.getStudents());
+        }
+        Collections.sort(list, new Comparator<Student>() {
+            @Override
+            public int compare(Student o1, Student o2) {
+                if(o1.getGpa()<o2.getGpa()){
+                    return 1;
+                }else if(o1.getGpa()>o2.getGpa()){
+                    return -1;
+                }else {
+                    return 0;
+                }
+            }
+        });
+
+        return list;
+    }
+
+
+
 
     @Override
     public void add(ClassRoom e) throws IOException {

@@ -35,6 +35,8 @@ public class Controller {
     @FXML
     TextField edit;
     @FXML
+    TextField movedOnName;
+    @FXML
     TextField editClassName;
     @FXML
     TextField editClassPath;
@@ -56,6 +58,8 @@ public class Controller {
     ComboBox classChoice;
     @FXML
     ComboBox choiceGender;
+    @FXML
+    ComboBox movedOnClass;
     @FXML
     ComboBox min;
     @FXML
@@ -225,7 +229,8 @@ public class Controller {
             } else {
                 if (validate.validateRegex(name, validate.CODE_REGEX)) {
                     ClassRoom classRoom = new ClassRoom(name, path);
-                    classRoom.writeToFileCSV(path, classRoom.getStudents());
+                    List<Student> list = new ArrayList<>();
+                    classRoom.writeToFileCSV(path,list);
                     manageClass.add(classRoom);
                     setClassChoice();
                     createAlert.showAlert("Notification", "Success", createAlert.INFORMATION);
@@ -275,6 +280,44 @@ public class Controller {
             }
         }
 
+    }
+
+    public void displayAll() throws IOException {
+        manageClass.addAll();
+        String str = "";
+        for (Student student:manageClass.readAll()){
+            str += student + "\n";
+        }
+        textArea.setText(str);
+    }
+
+    public void move() throws IOException {
+        String code = movedOnName.getText();
+        if(name.equals("")){
+            createAlert.showAlert("Warning","Nhập code học sinh vào ô bên cạnh",CreateAlert.WARNING);
+        }else {
+            boolean finded = false;
+            for (ClassRoom classRoom:manageClass.getClassRoomList()){
+                for (Student student:classRoom.getStudents()){
+                    if(student.getCode().equals(code)){
+                        finded = true;
+                        if(classRoom.getName().equals(movedOnClass.getValue().toString())){
+                            createAlert.showAlert("Warning","Học sinh này đã ở lớp này rồi",CreateAlert.WARNING);
+                        }else {
+                            manageClass.search(movedOnClass.getValue().toString()).add(student);
+                            classRoom.delete(classRoom.checkIndex(code));
+                            display();
+                            createAlert.showAlert("Notification", "Success",CreateAlert.INFORMATION);
+                            movedOnName.clear();
+                        }
+                        break;
+                    }
+                }
+            }
+            if(!finded){
+                createAlert.showAlert("Warning","Invalid",CreateAlert.WARNING);
+            }
+        }
     }
 
     public void displayOfSearch() throws IOException {
@@ -355,11 +398,12 @@ public class Controller {
         code.setPromptText(fieldCode);
         gpa.setPromptText(fieldGpa);
         className.setPromptText("name");
-        pathName.setPromptText("path");
+        pathName.setPromptText("example.csv");
         searchClass.setPromptText("edit name");
         editClassName.setPromptText("new name");
         editClassPath.setPromptText("new path");
         deleteClass.setPromptText("name");
+        movedOnName.setPromptText("code");
     }
 
     public void setClassChoice() throws IOException {
@@ -368,6 +412,7 @@ public class Controller {
             listClass.add(classRoom.getName());
         }
         setComboBox(classChoice, listClass);
+        setComboBox(movedOnClass, listClass);
     }
 
     public void setPlaceHolderOfSearch() {

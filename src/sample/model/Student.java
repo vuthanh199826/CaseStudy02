@@ -27,11 +27,19 @@ public Student(String name, String dob, String address, String email, String gen
         this.gpa = gpa;
     }
 
+    public int getAge(){
+String[] arr = getDob().split("/");
+return 2021 -Integer.parseInt(arr[2]);
+    }
+
     @Override
     public String toString() {
-        return "" + super.toString() +
-                "code='" + code + '\'' +
-                ", gpa=" + gpa +
-                '}';
+    String str ="";
+    str+= "code["+getCode()+"]," + " name='"+getName()+ "', age='"+getAge()+ "', gender='"+getGender()+"', address='"+getAddress()+"', email='"+getEmail()+"', GPA='"+getGpa()+"'";
+    return str;
+//        return "" + super.toString() +
+//                "code='" + code + '\'' +
+//                ", gpa=" + gpa +
+//                '}';
     }
 }
