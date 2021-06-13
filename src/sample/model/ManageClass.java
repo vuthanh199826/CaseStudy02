@@ -43,7 +43,14 @@ public class ManageClass implements Manage<ClassRoom>, WorkWithFile<ClassRoom> {
 
     @Override
     public void edit(int index, ClassRoom e) throws IOException {
-
+        classRoomList = readFileCSV("ListOfClassName.csv");
+        for (ClassRoom classRoom:classRoomList){
+            if(classRoomList.indexOf(classRoom)==index){
+                classRoom.setName(e.getName());
+                classRoom.setPath(e.getPath());
+            }
+        }
+        writeToFileCSV("ListOfClassName.csv", classRoomList);
     }
 
     @Override
@@ -57,7 +64,8 @@ public class ManageClass implements Manage<ClassRoom>, WorkWithFile<ClassRoom> {
     }
 
     @Override
-    public int checkIndex(String name) {
+    public int checkIndex(String name) throws IOException {
+        classRoomList = readFileCSV("ListOfClassName.csv");
         for (ClassRoom classRoom : classRoomList) {
             if (classRoom.getName().equals(name)) {
                 return classRoomList.indexOf(classRoom);
@@ -73,6 +81,7 @@ public class ManageClass implements Manage<ClassRoom>, WorkWithFile<ClassRoom> {
 
     @Override
     public boolean isExist(String name) throws IOException {
+        classRoomList = readFileCSV("ListOfClassName.csv");
         for (ClassRoom classRoom : classRoomList) {
             if (classRoom.getName().equals(name)) {
                 return true;

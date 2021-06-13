@@ -35,6 +35,12 @@ public class Controller {
     @FXML
     TextField edit;
     @FXML
+    TextField editClassName;
+    @FXML
+    TextField editClassPath;
+    @FXML
+    TextField searchClass;
+    @FXML
     TextField inputSearch;
     @FXML
     TextField className;
@@ -228,6 +234,8 @@ public class Controller {
                 }
             }
         }
+        className.clear();
+        pathName.clear();
     }
 
     public void deleteClass() throws IOException {
@@ -243,6 +251,30 @@ public class Controller {
             }
         }
         deleteClass.clear();
+    }
+    public void editClass() throws IOException {
+        String name = searchClass.getText();
+        String newName = editClassName.getText();
+        String newPath = editClassPath.getText();
+        if(name.equals("")){
+            createAlert.showAlert("Warning","Điền tên class muốn sửa vào ô bên cạnh",CreateAlert.WARNING);
+        }else {
+            if(manageClass.isExist(name)){
+                if(newName.equals("")||newPath.equals("")){
+                    createAlert.showAlert("Warning","Điền đầy đủ thông tin mới vào ô bên dưới",CreateAlert.WARNING);
+                }else {
+                    manageClass.edit(manageClass.checkIndex(name),new ClassRoom(newName,newPath));
+                    setClassChoice();
+                    searchClass.clear();
+                    editClassName.clear();
+                    editClassPath.clear();
+                    createAlert.showAlert("Notification","Success",CreateAlert.INFORMATION);
+                }
+            }else {
+                createAlert.showAlert("Warning","Invalid ",CreateAlert.WARNING);
+            }
+        }
+
     }
 
     public void displayOfSearch() throws IOException {
