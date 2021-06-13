@@ -4,7 +4,8 @@ public class Student extends Person {
     private String code;
     private double gpa;
 
-    public Student(String name, String dob, String address, String email, boolean gender, String code, double gpa) {
+//    public Student(String name, String dob, String address, String email, boolean gender, String code, double gpa) {
+public Student(String name, String dob, String address, String email, String gender, String code, double gpa) {
         super(name, dob, address, email, gender);
         this.code = code;
         this.gpa = gpa;

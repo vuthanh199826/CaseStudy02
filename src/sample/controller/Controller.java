@@ -29,8 +29,8 @@ public class Controller implements WorkWithFile<String> {
     TextField address;
     @FXML
     TextField email;
-    @FXML
-    TextField gender;
+//    @FXML
+//    TextField gender;
     @FXML
     TextField code;
     @FXML
@@ -53,6 +53,8 @@ public class Controller implements WorkWithFile<String> {
     ComboBox searchChoice;
     @FXML
     ComboBox classChoice;
+    @FXML
+    ComboBox choiceGender;
     @FXML
     ComboBox min;
     @FXML
@@ -80,6 +82,8 @@ public class Controller implements WorkWithFile<String> {
         setComboBox(searchChoice, listSearchChoice);
         ObservableList<String> listMin = FXCollections.observableArrayList("0", "1", "2", "3", "4", "5", "6", "7", "8", "9");
         setComboBox(min, listMin);
+        ObservableList<String> listGender = FXCollections.observableArrayList("Male","Female");
+setComboBox(choiceGender,listGender);
         ObservableList<String> listMax = FXCollections.observableArrayList("1", "2", "3", "4", "5", "6", "7", "8", "9", "10");
         setComboBox(max, listMax);
 //        ObservableList<String> listClass = FXCollections.observableArrayList("C0321K1", "C0321K2");
@@ -275,7 +279,7 @@ public class Controller implements WorkWithFile<String> {
         dob.clear();
         address.clear();
         email.clear();
-        gender.clear();
+//        gender.clear();
         code.clear();
         gpa.clear();
     }
@@ -289,8 +293,9 @@ public class Controller implements WorkWithFile<String> {
                 if (validate.validateRegex(newAddress, validate.ADDRESS_REGEX)) {
                     String newEmai = email.getText();
                     if (validate.validateRegex(newEmai, validate.EMAIL_REGEX)) {
-                        if (validate.validateRegex(gender.getText(), validate.GENDER_REGEX)) {
-                            boolean newGender = Boolean.parseBoolean(gender.getText());
+//                        if (validate.validateRegex(gender.getText(), validate.GENDER_REGEX)) {
+//                            boolean newGender = Boolean.parseBoolean(gender.getText());
+                            String newGender = choiceGender.getValue().toString();
                             String newCode = code.getText();
                             if (validate.validateRegex(newCode, validate.CODE_REGEX) && !classRoom.isExist(newCode)) {
                                 if (validate.validateRegex(gpa.getText(), validate.GPA_REGEX)) {
@@ -302,9 +307,9 @@ public class Controller implements WorkWithFile<String> {
                             } else {
                                 code.clear();
                             }
-                        } else {
-                            gender.clear();
-                        }
+//                        } else {
+//                            gender.clear();
+//                        }
 
                     } else {
                         email.clear();
@@ -344,7 +349,7 @@ public class Controller implements WorkWithFile<String> {
         dob.setPromptText(fieldDob);
         address.setPromptText(fieldAddress);
         email.setPromptText(fieldEmail);
-        gender.setPromptText(fieldGender);
+//        gender.setPromptText(fieldGender);
         code.setPromptText(fieldCode);
         gpa.setPromptText(fieldGpa);
 
