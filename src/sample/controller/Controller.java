@@ -61,14 +61,14 @@ public class Controller implements WorkWithFile<String> {
     ComboBox max;
     @FXML
     TextArea textArea;
-
-    ClassRoom classRoom = new ClassRoom("C0321K1", "Students.csv");
-
-    ClassRoom classRoom1 = new ClassRoom("C0321K2", "Students2.csv");
+//
+//    ClassRoom classRoom = new ClassRoom("C0321K1", "Students.csv");
+//
+//    ClassRoom classRoom1 = new ClassRoom("C0321K2", "Students2.csv");
     Validate validate = new Validate();
     CreateAlert createAlert = new CreateAlert();
     ManageClass manageClass = new ManageClass();
-    ObservableList<String> listClass = FXCollections.observableArrayList();
+
 
 
 
@@ -86,16 +86,15 @@ public class Controller implements WorkWithFile<String> {
 setComboBox(choiceGender,listGender);
         ObservableList<String> listMax = FXCollections.observableArrayList("1", "2", "3", "4", "5", "6", "7", "8", "9", "10");
         setComboBox(max, listMax);
-//        ObservableList<String> listClass = FXCollections.observableArrayList("C0321K1", "C0321K2");
-        listClass.add("C0321K1");
-        listClass.add("C0321K2");
-        setComboBox(classChoice, listClass);
+setClassChoice();
 
 
         setPlaceHolderOfStudent("name", "dd/mm/yyyy", "address", "example@gmail.com", "true/false", "code", "0.0 - 10.0");
         setPlaceHolderOfSearch();
-        manageClass.add(classRoom);
-        manageClass.add(classRoom1);
+//        manageClass.add(classRoom);
+//        manageClass.add(classRoom1);
+        System.out.println(manageClass);
+
     }
 
 
@@ -116,13 +115,18 @@ setComboBox(choiceGender,listGender);
     public void display() throws IOException {
         String name = classChoice.getValue().toString();
         String path = manageClass.search(name).getPath();
-//        List<Student> list = classRoom.readFileCSV("Students.csv");
         List<Student> list = manageClass.search(name).readFileCSV(path);
         String str = "";
-        for (Student student : list) {
-            str += student.toString() + "\n";
+        try {
+
+            for (Student student : list) {
+                str += student.toString() + "\n";
+            }
+            textArea.setText(str);
+        }catch (Exception e){
+            textArea.setText("Empty");
         }
-        textArea.setText(str);
+
     }
 
     public void delete() throws IOException {
@@ -251,9 +255,12 @@ setComboBox(choiceGender,listGender);
                 createAlert.showAlert("WARNING", "Tên lớp đã tồn tại", createAlert.WARNING);
             } else {
                 if (validate.validateRegex(name, validate.CODE_REGEX)) {
-                    manageClass.add(new ClassRoom(name, path));
-                    listClass.add(name);
-                    setComboBox(classChoice, listClass);
+                    ClassRoom classRoom = new ClassRoom(name,path);
+                    classRoom.writeToFileCSV(path,classRoom.getStudents());
+                    manageClass.add(classRoom);
+                    setClassChoice();
+//                    listClass.add(name);
+//                    setComboBox(classChoice, listClass);
                     createAlert.showAlert("Notification", "Success", createAlert.INFORMATION);
                 } else {
                     createAlert.showAlert("WARNING", "Tên lớp không hợp lệ", createAlert.WARNING);
@@ -264,8 +271,18 @@ setComboBox(choiceGender,listGender);
 
     }
 
+    public void deleteClass() throws IOException {
+        String name = deleteClass.getText();
+        if(manageClass.isExist(name)){
+            manageClass.delete(manageClass.checkIndex(name));
+            setClassChoice();
+            createAlert.showAlert("Notification","Success",CreateAlert.INFORMATION);
+        }
+    }
+
     public void displayOfSearch() throws IOException {
-        List<Student> list = classRoom.readFileCSV("SearchList.csv");
+//        List<Student> list = classRoom.readFileCSV("SearchList.csv");
+        List<Student> list = manageClass.search(classChoice.getValue().toString()).readFileCSV("SearchList.csv");
         String str = "";
         for (Student student : list) {
             str += student.toString() + "\n";
@@ -297,7 +314,7 @@ setComboBox(choiceGender,listGender);
 //                            boolean newGender = Boolean.parseBoolean(gender.getText());
                             String newGender = choiceGender.getValue().toString();
                             String newCode = code.getText();
-                            if (validate.validateRegex(newCode, validate.CODE_REGEX) && !classRoom.isExist(newCode)) {
+                            if (validate.validateRegex(newCode, validate.CODE_REGEX) && !manageClass.search(classChoice.getValue().toString()).isExist(newCode)) {
                                 if (validate.validateRegex(gpa.getText(), validate.GPA_REGEX)) {
                                     Double newGpa = Double.parseDouble(gpa.getText());
                                     return new Student(newName, newDob, newAddress, newEmai, newGender, newCode, newGpa);
@@ -353,6 +370,13 @@ setComboBox(choiceGender,listGender);
         code.setPromptText(fieldCode);
         gpa.setPromptText(fieldGpa);
 
+    }
+    public void setClassChoice() throws IOException {
+        ObservableList<String> listClass = FXCollections.observableArrayList();
+        for (ClassRoom classRoom:manageClass.readFileCSV("ListOfClassName.csv")){
+            listClass.add(classRoom.getName());
+        }
+        setComboBox(classChoice, listClass);
     }
 
     public void setPlaceHolderOfSearch() {
