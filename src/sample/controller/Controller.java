@@ -307,7 +307,7 @@ public class Controller {
                         finded = true;
                         if (classRoom.getName().equals(movedOnClass.getValue().toString())) {
                             createAlert.showAlert("Warning", "Học sinh này đã ở lớp này rồi", CreateAlert.WARNING);
-                        } else {
+                        } else if(!classRoom.getName().equals(movedOnClass.getValue().toString())){
                             manageClass.search(movedOnClass.getValue().toString()).add(student);
                             classRoom.delete(classRoom.checkIndex(code));
                             display();
@@ -316,6 +316,9 @@ public class Controller {
                         }
                         break;
                     }
+                }
+                if (finded){
+                    break;
                 }
             }
             if (!finded) {

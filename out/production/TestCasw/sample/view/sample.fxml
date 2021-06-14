@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="590.0" prefWidth="917.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.controller.Controller">
+<AnchorPane maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="590.0" prefWidth="917.0" style="-fx-background-color: silver;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.controller.Controller">
    <children>
       <Button layoutX="383.0" layoutY="89.0" mnemonicParsing="false" onAction="#add" prefHeight="25.0" prefWidth="59.0" text="Add" />
       <TextArea fx:id="textArea" layoutX="94.0" layoutY="361.0" prefHeight="208.0" prefWidth="732.0" />
@@ -15,13 +16,34 @@
       <TextField fx:id="code" layoutX="150.0" layoutY="266.0" prefHeight="25.0" prefWidth="161.0" />
       <TextField fx:id="gpa" layoutX="150.0" layoutY="298.0" prefHeight="25.0" prefWidth="161.0" />
       <Button layoutX="383.0" layoutY="122.0" mnemonicParsing="false" onAction="#display" prefHeight="25.0" prefWidth="59.0" text="Display" />
-      <Label layoutX="85.0" layoutY="108.0" text="Name" />
-      <Label layoutX="89.0" layoutY="138.0" text="Dob" />
-      <Label layoutX="80.0" layoutY="174.0" text="Address" />
-      <Label layoutX="84.0" layoutY="203.0" text="Email" />
-      <Label layoutX="79.0" layoutY="237.0" text="Gender" />
-      <Label layoutX="86.0" layoutY="270.0" text="Code" />
-      <Label layoutX="87.0" layoutY="302.0" text="GPA" />
+      <Label layoutX="85.0" layoutY="108.0" text="Name">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font></Label>
+      <Label layoutX="89.0" layoutY="138.0" text="Dob">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font></Label>
+      <Label layoutX="80.0" layoutY="174.0" text="Address">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font></Label>
+      <Label layoutX="84.0" layoutY="203.0" text="Email">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font></Label>
+      <Label layoutX="79.0" layoutY="237.0" text="Gender">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font></Label>
+      <Label layoutX="86.0" layoutY="270.0" text="Code">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font></Label>
+      <Label layoutX="87.0" layoutY="302.0" text="GPA">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font></Label>
       <Button layoutX="383.0" layoutY="154.0" mnemonicParsing="false" onAction="#delete" prefHeight="25.0" prefWidth="59.0" text="Delete" />
       <TextField fx:id="delete" layoutX="454.0" layoutY="154.0" prefHeight="25.0" prefWidth="192.0" />
       <TextField fx:id="edit" layoutX="454.0" layoutY="199.0" prefHeight="25.0" prefWidth="192.0" />
@@ -57,9 +79,9 @@
             <Font name="System Bold Italic" size="15.0" />
          </font>
       </Label>
-      <Label layoutX="441.0" layoutY="14.0" prefHeight="18.0" prefWidth="141.0" text="QUÁN LÝ LỚP HỌC" textFill="#3758d0">
+      <Label layoutX="413.0" layoutY="14.0" prefHeight="23.0" prefWidth="185.0" text="QUÁN LÝ LỚP HỌC" textFill="#3758d0">
          <font>
-            <Font name="Stencil" size="15.0" />
+            <Font name="Elephant" size="17.0" />
          </font>
       </Label>
       <Button layoutX="684.0" layoutY="154.0" mnemonicParsing="false" onAction="#editClass" prefHeight="25.0" prefWidth="51.0" text="Edit" />
@@ -70,5 +92,13 @@
       <TextField fx:id="movedOnName" layoutX="753.0" layoutY="266.0" prefHeight="25.0" prefWidth="128.0" />
       <ComboBox fx:id="movedOnClass" layoutX="753.0" layoutY="298.0" prefHeight="25.0" prefWidth="128.0" />
       <Button layoutX="610.0" layoutY="101.0" mnemonicParsing="false" onAction="#displayAll" text="ALL" />
+      <Label layoutX="96.0" layoutY="344.0" prefHeight="17.0" prefWidth="732.0" text="---------------------------------------------------------------------SCREEN-----------------------------------------------------------------------" textFill="#634eb9">
+         <font>
+            <Font name="System Bold Italic" size="12.0" />
+         </font>
+      </Label>
    </children>
+   <cursor>
+      <Cursor fx:constant="HAND" />
+   </cursor>
 </AnchorPane>
