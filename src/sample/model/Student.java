@@ -4,8 +4,7 @@ public class Student extends Person {
     private String code;
     private double gpa;
 
-//    public Student(String name, String dob, String address, String email, boolean gender, String code, double gpa) {
-public Student(String name, String dob, String address, String email, String gender, String code, double gpa) {
+    public Student(String name, String dob, String address, String email, String gender, String code, double gpa) {
         super(name, dob, address, email, gender);
         this.code = code;
         this.gpa = gpa;
@@ -27,19 +26,15 @@ public Student(String name, String dob, String address, String email, String gen
         this.gpa = gpa;
     }
 
-    public int getAge(){
-String[] arr = getDob().split("/");
-return 2021 -Integer.parseInt(arr[2]);
+    public int getAge() {
+        String[] arr = getDob().split("/");
+        return 2021 - Integer.parseInt(arr[2]);
     }
 
     @Override
     public String toString() {
-    String str ="";
-    str+= "code["+getCode()+"]," + " name='"+getName()+ "', age='"+getAge()+ "', gender='"+getGender()+"', address='"+getAddress()+"', email='"+getEmail()+"', GPA='"+getGpa()+"'";
-    return str;
-//        return "" + super.toString() +
-//                "code='" + code + '\'' +
-//                ", gpa=" + gpa +
-//                '}';
+        String str = "";
+        str += "code[" + getCode() + "]," + " name='" + getName() + "', age='" + getAge() + "', gender='" + getGender() + "', address='" + getAddress() + "', email='" + getEmail() + "', GPA='" + getGpa() + "'";
+        return str;
     }
 }

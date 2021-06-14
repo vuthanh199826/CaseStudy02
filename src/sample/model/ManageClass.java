@@ -20,7 +20,7 @@ public class ManageClass implements Manage<ClassRoom>, WorkWithFile<ClassRoom> {
         }
     }
 
-    public List<ClassRoom> getClassRoomList() throws IOException {
+    public List<ClassRoom> getClassRoomList()  {
         classRoomList = readFileCSV("ListOfClassName.csv");
         return classRoomList;
     }
@@ -55,13 +55,7 @@ public class ManageClass implements Manage<ClassRoom>, WorkWithFile<ClassRoom> {
         Collections.sort(list, new Comparator<Student>() {
             @Override
             public int compare(Student o1, Student o2) {
-                if(o1.getGpa()<o2.getGpa()){
-                    return 1;
-                }else if(o1.getGpa()>o2.getGpa()){
-                    return -1;
-                }else {
-                    return 0;
-                }
+                return Double.compare(o2.getGpa(), o1.getGpa());
             }
         });
 
@@ -98,17 +92,17 @@ public class ManageClass implements Manage<ClassRoom>, WorkWithFile<ClassRoom> {
     }
 
     @Override
-    public List<ClassRoom> searchByName(String name) throws IOException {
+    public List<ClassRoom> searchByName(String name) {
         return null;
     }
 
     @Override
-    public List<ClassRoom> searchByCode(String code) throws IOException {
+    public List<ClassRoom> searchByCode(String code) {
         return null;
     }
 
     @Override
-    public int checkIndex(String name) throws IOException {
+    public int checkIndex(String name)  {
         classRoomList = readFileCSV("ListOfClassName.csv");
         for (ClassRoom classRoom : classRoomList) {
             if (classRoom.getName().equals(name)) {
@@ -119,12 +113,12 @@ public class ManageClass implements Manage<ClassRoom>, WorkWithFile<ClassRoom> {
     }
 
     @Override
-    public void sort(int option) throws IOException {
+    public void sort(int option) {
 
     }
 
     @Override
-    public boolean isExist(String name) throws IOException {
+    public boolean isExist(String name)  {
         classRoomList = readFileCSV("ListOfClassName.csv");
         for (ClassRoom classRoom : classRoomList) {
             if (classRoom.getName().equals(name)) {
@@ -155,7 +149,7 @@ public class ManageClass implements Manage<ClassRoom>, WorkWithFile<ClassRoom> {
     }
 
     @Override
-    public List<ClassRoom> readFileCSV(String path) throws IOException {
+    public List<ClassRoom> readFileCSV(String path)  {
         List<ClassRoom> list = new ArrayList<>();
         try {
             FileReader fileReader = new FileReader(path);

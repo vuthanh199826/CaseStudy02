@@ -48,13 +48,11 @@ public class ClassRoom implements Manage<Student>, WorkWithFile<Student> {
 
     @Override
     public void add(Student e) throws IOException {
-//        addToFileCSV("Students.csv", e);
         addToFileCSV(path, e);
     }
 
     @Override
     public void delete(int index) throws IOException {
-//        students = readFileCSV("Students.csv");
         students = readFileCSV(path);
         for (Student student : students) {
             if (students.indexOf(student) == index) {
@@ -62,13 +60,11 @@ public class ClassRoom implements Manage<Student>, WorkWithFile<Student> {
                 break;
             }
         }
-//        writeToFileCSV("Students.csv", students);
         writeToFileCSV(path, students);
     }
 
     @Override
     public void edit(int index, Student e) throws IOException {
-//        students = readFileCSV("Students.csv");
         students = readFileCSV(path);
         for (Student student : students) {
             if (students.indexOf(student) == index) {
@@ -78,17 +74,14 @@ public class ClassRoom implements Manage<Student>, WorkWithFile<Student> {
                 student.setDob(e.getDob());
                 student.setAddress(e.getAddress());
                 student.setEmail(e.getEmail());
-//                student.setGender(e.isGender());
                 student.setGender(e.getGender());
             }
         }
-//        writeToFileCSV("Students.csv", students);
         writeToFileCSV(path, students);
     }
 
     @Override
     public List<Student> searchByName(String name) throws IOException {
-//        students = readFileCSV("Students.csv");
         students = readFileCSV(path);
         List<Student> list = new ArrayList<>();
         for (Student student : students) {
@@ -101,7 +94,6 @@ public class ClassRoom implements Manage<Student>, WorkWithFile<Student> {
 
     @Override
     public List<Student> searchByCode(String code) throws IOException {
-//        students = readFileCSV("Students.csv");
         students = readFileCSV(path);
         List<Student> list = new ArrayList<>();
         for (Student student : students) {
@@ -113,7 +105,6 @@ public class ClassRoom implements Manage<Student>, WorkWithFile<Student> {
     }
 
     public List<Student> searchByGPA(double min, double max) throws IOException {
-//        students = readFileCSV("Students.csv");
         students = readFileCSV(path);
         List<Student> list = new ArrayList<>();
         for (Student student : students) {
@@ -138,7 +129,6 @@ public class ClassRoom implements Manage<Student>, WorkWithFile<Student> {
 
     @Override
     public void sort(int option) throws IOException {
-//        students = readFileCSV("Students.csv");
         students = readFileCSV(path);
         Collections.sort(students, new Comparator<Student>() {
             @Override
@@ -160,13 +150,11 @@ public class ClassRoom implements Manage<Student>, WorkWithFile<Student> {
                 }
             }
         });
-//        writeToFileCSV("Students.csv", students);
         writeToFileCSV(path, students);
     }
 
     @Override
     public boolean isExist(String code) throws IOException {
-//        students = readFileCSV("Students.csv");
         students = readFileCSV(path);
         for (Student student : students) {
             if (student.getCode().equals(code)) {
@@ -181,9 +169,7 @@ public class ClassRoom implements Manage<Student>, WorkWithFile<Student> {
         FileWriter fileWriter = new FileWriter(path);
         BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
         for (Student student : list) {
-//            bufferedWriter.write(student.getName() + "," + student.getDob() + "," + student.getAddress() + "," + student.getEmail() + "," + student.isGender() + "," + student.getCode() + "," + student.getGpa() + "\n");
             bufferedWriter.write(student.getName() + "," + student.getDob() + "," + student.getAddress() + "," + student.getEmail() + "," + student.getGender() + "," + student.getCode() + "," + student.getGpa() + "\n");
-
         }
         bufferedWriter.close();
         fileWriter.close();
@@ -193,19 +179,7 @@ public class ClassRoom implements Manage<Student>, WorkWithFile<Student> {
     public void addToFileCSV(String path, Student student) throws IOException {
         FileWriter fileWriter = new FileWriter(path, true);
         BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
-//        bufferedWriter.write(student.getName() + "," + student.getDob() + "," + student.getAddress() + "," + student.getEmail() + "," + student.isGender() + "," + student.getCode() + "," + student.getGpa() + "\n");
         bufferedWriter.write(student.getName() + "," + student.getDob() + "," + student.getAddress() + "," + student.getEmail() + "," + student.getGender() + "," + student.getCode() + "," + student.getGpa() + "\n");
-
-        bufferedWriter.close();
-        fileWriter.close();
-    }
-
-    public void addToFileCSV(String path, List<Student> list) throws IOException {
-        FileWriter fileWriter = new FileWriter(path);
-        BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
-        for (Student student : list) {
-            bufferedWriter.write(student.getName() + "," + student.getDob() + "," + student.getAddress() + "," + student.getEmail() + "," + student.getGender() + "," + student.getCode() + "," + student.getGpa() + "\n");
-        }
         bufferedWriter.close();
         fileWriter.close();
     }
@@ -222,7 +196,6 @@ public class ClassRoom implements Manage<Student>, WorkWithFile<Student> {
             String dob = arr[1];
             String address = arr[2];
             String email = arr[3];
-//            boolean gender = Boolean.parseBoolean(arr[4]);
             String gender = arr[4];
             String code = arr[5];
             double gpa = Double.parseDouble(arr[6]);

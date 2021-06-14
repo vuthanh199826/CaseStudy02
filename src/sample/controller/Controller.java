@@ -73,7 +73,7 @@ public class Controller {
     public Controller() {
     }
 
-    public void initialize() throws IOException {
+    public void initialize() {
         ObservableList<String> list = FXCollections.observableArrayList("Sort by name", "Sort by code", "Sort by GPA");
         setComboBox(comboBox, list);
         ObservableList<String> listSearchChoice = FXCollections.observableArrayList("Search by name", "Search by code", "Search by GPA");
@@ -87,7 +87,6 @@ public class Controller {
         setClassChoice();
         setPlaceHolderOfStudent("name", "dd/mm/yyyy", "address", "example@gmail.com", "true/false", "code", "0.0 - 10.0");
         setPlaceHolderOfSearch();
-        System.out.println(manageClass);
     }
 
     public void add() throws IOException {
@@ -112,9 +111,13 @@ public class Controller {
             for (Student student : list) {
                 str += student.toString() + "\n";
             }
-            textArea.setText(str);
+            if (str.equals("")) {
+                textArea.setText("Empty");
+            } else {
+                textArea.setText(str);
+            }
         } catch (Exception e) {
-            textArea.setText("Empty");
+            e.printStackTrace();
         }
     }
 
@@ -230,7 +233,7 @@ public class Controller {
                 if (validate.validateRegex(name, validate.CODE_REGEX)) {
                     ClassRoom classRoom = new ClassRoom(name, path);
                     List<Student> list = new ArrayList<>();
-                    classRoom.writeToFileCSV(path,list);
+                    classRoom.writeToFileCSV(path, list);
                     manageClass.add(classRoom);
                     setClassChoice();
                     createAlert.showAlert("Notification", "Success", createAlert.INFORMATION);
@@ -257,26 +260,27 @@ public class Controller {
         }
         deleteClass.clear();
     }
+
     public void editClass() throws IOException {
         String name = searchClass.getText();
         String newName = editClassName.getText();
         String newPath = editClassPath.getText();
-        if(name.equals("")){
-            createAlert.showAlert("Warning","Điền tên class muốn sửa vào ô bên cạnh",CreateAlert.WARNING);
-        }else {
-            if(manageClass.isExist(name)){
-                if(newName.equals("")||newPath.equals("")){
-                    createAlert.showAlert("Warning","Điền đầy đủ thông tin mới vào ô bên dưới",CreateAlert.WARNING);
-                }else {
-                    manageClass.edit(manageClass.checkIndex(name),new ClassRoom(newName,newPath));
+        if (name.equals("")) {
+            createAlert.showAlert("Warning", "Điền tên class muốn sửa vào ô bên cạnh", CreateAlert.WARNING);
+        } else {
+            if (manageClass.isExist(name)) {
+                if (newName.equals("") || newPath.equals("")) {
+                    createAlert.showAlert("Warning", "Điền đầy đủ thông tin mới vào ô bên dưới", CreateAlert.WARNING);
+                } else {
+                    manageClass.edit(manageClass.checkIndex(name), new ClassRoom(newName, newPath));
                     setClassChoice();
                     searchClass.clear();
                     editClassName.clear();
                     editClassPath.clear();
-                    createAlert.showAlert("Notification","Success",CreateAlert.INFORMATION);
+                    createAlert.showAlert("Notification", "Success", CreateAlert.INFORMATION);
                 }
-            }else {
-                createAlert.showAlert("Warning","Invalid ",CreateAlert.WARNING);
+            } else {
+                createAlert.showAlert("Warning", "Invalid ", CreateAlert.WARNING);
             }
         }
 
@@ -285,7 +289,7 @@ public class Controller {
     public void displayAll() throws IOException {
         manageClass.addAll();
         String str = "";
-        for (Student student:manageClass.readAll()){
+        for (Student student : manageClass.readAll()) {
             str += student + "\n";
         }
         textArea.setText(str);
@@ -293,29 +297,29 @@ public class Controller {
 
     public void move() throws IOException {
         String code = movedOnName.getText();
-        if(name.equals("")){
-            createAlert.showAlert("Warning","Nhập code học sinh vào ô bên cạnh",CreateAlert.WARNING);
-        }else {
+        if (name.equals("")) {
+            createAlert.showAlert("Warning", "Nhập code học sinh vào ô bên cạnh", CreateAlert.WARNING);
+        } else {
             boolean finded = false;
-            for (ClassRoom classRoom:manageClass.getClassRoomList()){
-                for (Student student:classRoom.getStudents()){
-                    if(student.getCode().equals(code)){
+            for (ClassRoom classRoom : manageClass.getClassRoomList()) {
+                for (Student student : classRoom.getStudents()) {
+                    if (student.getCode().equals(code)) {
                         finded = true;
-                        if(classRoom.getName().equals(movedOnClass.getValue().toString())){
-                            createAlert.showAlert("Warning","Học sinh này đã ở lớp này rồi",CreateAlert.WARNING);
-                        }else {
+                        if (classRoom.getName().equals(movedOnClass.getValue().toString())) {
+                            createAlert.showAlert("Warning", "Học sinh này đã ở lớp này rồi", CreateAlert.WARNING);
+                        } else {
                             manageClass.search(movedOnClass.getValue().toString()).add(student);
                             classRoom.delete(classRoom.checkIndex(code));
                             display();
-                            createAlert.showAlert("Notification", "Success",CreateAlert.INFORMATION);
+                            createAlert.showAlert("Notification", "Success", CreateAlert.INFORMATION);
                             movedOnName.clear();
                         }
                         break;
                     }
                 }
             }
-            if(!finded){
-                createAlert.showAlert("Warning","Invalid",CreateAlert.WARNING);
+            if (!finded) {
+                createAlert.showAlert("Warning", "Invalid", CreateAlert.WARNING);
             }
         }
     }
@@ -406,7 +410,7 @@ public class Controller {
         movedOnName.setPromptText("code");
     }
 
-    public void setClassChoice() throws IOException {
+    public void setClassChoice() {
         ObservableList<String> listClass = FXCollections.observableArrayList();
         for (ClassRoom classRoom : manageClass.readFileCSV("ListOfClassName.csv")) {
             listClass.add(classRoom.getName());
